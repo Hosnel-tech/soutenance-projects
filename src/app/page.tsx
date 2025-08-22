@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Eye,
   EyeOff,
@@ -11,6 +12,7 @@ import {
   Phone,
   Lock,
   CheckCircle,
+  LayoutDashboard,
 } from "lucide-react";
 
 interface FormData {
@@ -28,6 +30,8 @@ interface FormData {
 }
 
 export default function Home() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState<FormData>({
     nom: "",
     prenom: "",
@@ -64,7 +68,9 @@ export default function Home() {
   };
 
   const nextStep = () => {
-    setCurrentStep((prev) => prev + 1);
+    if (currentStep < 3) {
+      setCurrentStep((prev) => prev + 1);
+    }
   };
 
   const prevStep = () => {
@@ -74,13 +80,14 @@ export default function Home() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
-    // Simulate API call
+    // Simuler un délai de soumission
     setTimeout(() => {
+      console.log("Données du formulaire:", formData);
       setIsSubmitting(false);
-      alert(
-        "Inscription réussie ! Vous allez recevoir un email de confirmation."
-      );
-    }, 2000);
+
+      // Rediriger vers le dashboard après création du compte
+      router.push("/admin/dashboard");
+    }, 1000);
   };
 
   const renderStep1 = () => (
@@ -225,18 +232,6 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <MapPin className="absolute left-3 top-3 text-gray-400 h-5 w-5" />
-        <textarea
-          name="adresse"
-          value={formData.adresse}
-          onChange={handleInputChange}
-          placeholder="Adresse complète"
-          rows={3}
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-        />
-      </div>
-
-      <div className="relative">
         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type={showPassword ? "text" : "password"}
@@ -289,10 +284,12 @@ export default function Home() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8 animate-slideDown">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
-            <CheckCircle className="h-8 w-8 text-white" />
+          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+            <LayoutDashboard className="h-10 w-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Gestion TD</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            EduTD Manager
+          </h1>
           <p className="text-gray-600">Créez votre compte pour commencer</p>
         </div>
 
@@ -304,7 +301,7 @@ export default function Home() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
                     step <= currentStep
-                      ? "bg-blue-500 text-white"
+                      ? "bg-[#004B70] text-white"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
@@ -313,7 +310,7 @@ export default function Home() {
                 {step < 3 && (
                   <div
                     className={`w-8 h-1 mx-2 transition-all duration-300 ${
-                      step < currentStep ? "bg-blue-500" : "bg-gray-200"
+                      step < currentStep ? "bg-[#004B70]" : "bg-gray-200"
                     }`}
                   />
                 )}
@@ -346,7 +343,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
+                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-[#004B70] text-white rounded-lg hover:from-blue-600 hover:to-[#004B70] transition-all duration-200 transform hover:scale-105"
                   >
                     Suivant
                   </button>
@@ -355,7 +352,7 @@ export default function Home() {
                     type="button"
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                    className="px-8 py-3 bg-gradient-to-r from-[#0F673B] to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                   >
                     {isSubmitting ? (
                       <>
@@ -377,7 +374,7 @@ export default function Home() {
           <p className="text-gray-600">
             Vous avez déjà un compte ?{" "}
             <a
-              href="#"
+              href="/login"
               className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
             >
               Se connecter
