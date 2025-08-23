@@ -54,6 +54,8 @@ export default function Home() {
 
   const banques: string[] = ["Ecobank", "UBA", "NSIA"];
   const etablissements: string[] = ["Berger", "Palmier", "Pyramide"];
+  const matieres: string[] = ["Anglais", "Français", "Mathématiques"];
+  const classes: string[] = ["CM2", "3ème", "Tle"];
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -215,6 +217,40 @@ export default function Home() {
           {etablissements.map((etablissement) => (
             <option key={etablissement} value={etablissement}>
               {etablissement}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="relative">
+        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+        <select
+          name="etablissement"
+          value={formData.etablissement}
+          onChange={handleInputChange}
+          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white"
+        >
+          <option value="">Sélectionner votre matière</option>
+          {matieres.map((matiere) => (
+            <option key={matiere} value={matiere}>
+              {matiere}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="relative">
+        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+        <select
+          name="etablissement"
+          value={formData.etablissement}
+          onChange={handleInputChange}
+          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white"
+        >
+          <option value="">Sélectionner votre classe</option>
+          {classes.map((classe) => (
+            <option key={classe} value={classe}>
+              {classe}
             </option>
           ))}
         </select>

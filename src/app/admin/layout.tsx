@@ -14,6 +14,7 @@ import {
   GraduationCap,
   FileText,
   BarChart3,
+  ClipboardList,
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -39,34 +40,40 @@ export default function AdminLayout({
       current: pathname === "/admin/enseignants",
     },
     {
-      name: "Étudiants",
-      href: "/admin/etudiants",
-      icon: GraduationCap,
-      current: pathname === "/admin/etudiants",
+      name: "Gestion TD",
+      href: "/admin/td",
+      icon: ClipboardList,
+      current: pathname === "/admin/td",
     },
+    // {
+    //   name: "Étudiants",
+    //   href: "/admin/etudiants",
+    //   icon: GraduationCap,
+    //   current: pathname === "/admin/etudiants",
+    // },
+    // {
+    //   name: "Cours",
+    //   href: "/admin/cours",
+    //   icon: BookOpen,
+    //   current: pathname === "/admin/cours",
+    // },
+    // {
+    //   name: "Établissements",
+    //   href: "/admin/etablissements",
+    //   icon: Building,
+    //   current: pathname === "/admin/etablissements",
+    // },
+    // {
+    //   name: "Rapports",
+    //   href: "/admin/rapports",
+    //   icon: BarChart3,
+    //   current: pathname === "/admin/rapports",
+    // },
     {
-      name: "Cours",
-      href: "/admin/cours",
-      icon: BookOpen,
-      current: pathname === "/admin/cours",
-    },
-    {
-      name: "Établissements",
-      href: "/admin/etablissements",
-      icon: Building,
-      current: pathname === "/admin/etablissements",
-    },
-    {
-      name: "Rapports",
-      href: "/admin/rapports",
-      icon: BarChart3,
-      current: pathname === "/admin/rapports",
-    },
-    {
-      name: "Documents",
-      href: "/admin/documents",
+      name: "Epreuves",
+      href: "/admin/epreuves",
       icon: FileText,
-      current: pathname === "/admin/documents",
+      current: pathname === "/admin/epreuves",
     },
     {
       name: "Paramètres",

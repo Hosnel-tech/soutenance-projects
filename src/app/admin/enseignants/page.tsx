@@ -1,8 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Users, Plus, Search, Filter } from "lucide-react";
+import AddTeacher from "@/components/add_teacher";
 
 export default function EnseignantsPage() {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleSubmit = async (data: any) => {
+    console.log("Données du formulaire:", data);
+    // Ici vous pouvez ajouter la logique pour envoyer les données à votre API
+    // Simuler un délai de traitement
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  };
+
   return (
     <div className="space-y-6">
       {/* Header de la page */}
@@ -15,7 +25,10 @@ export default function EnseignantsPage() {
             Gérez les enseignants de votre établissement
           </p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+        <button
+          onClick={() => setShowModal(true)}
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Ajouter un enseignant
         </button>
@@ -31,10 +44,10 @@ export default function EnseignantsPage() {
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
-        <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
+        {/* <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
           <Filter className="h-4 w-4 mr-2" />
           Filtres
-        </button>
+        </button> */}
       </div>
 
       {/* Tableau des enseignants */}
@@ -58,7 +71,19 @@ export default function EnseignantsPage() {
                   Établissement
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Statut
+                  Téléphone
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  IFRU
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  N° Bancaire
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Banque
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Classe
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -88,9 +113,23 @@ export default function EnseignantsPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   Lycée Berger
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                    Actif
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  +33 6 12 34 56 78
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    IFRU001
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
+                  1234 5678 9012 3456
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  BNP Paribas
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                    Terminale S
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -124,9 +163,23 @@ export default function EnseignantsPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   Lycée Palmier
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                    Actif
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  +33 6 98 76 54 32
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    IFRU002
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
+                  9876 5432 1098 7654
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  Crédit Agricole
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                    1ère S
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -160,9 +213,73 @@ export default function EnseignantsPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   Lycée Pyramide
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  +33 6 45 67 89 01
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    IFRU003
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
+                  4567 8901 2345 6789
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  Société Générale
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                    Terminale ES
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button className="text-blue-600 hover:text-blue-900 mr-3">
+                    Modifier
+                  </button>
+                  <button className="text-red-600 hover:text-red-900">
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                    En congé
+                  <div className="flex items-center">
+                    <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
+                      <Users className="h-5 w-5 text-orange-600" />
+                    </div>
+                    <div className="ml-4">
+                      <div className="text-sm font-medium text-gray-900">
+                        Sophie Bernard
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        sophie.bernard@email.com
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  Biologie
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  Lycée Berger
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  +33 6 23 45 67 89
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    IFRU004
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
+                  2345 6789 0123 4567
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  LCL
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                    1ère S
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -183,8 +300,8 @@ export default function EnseignantsPage() {
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-700">
           Affichage de <span className="font-medium">1</span> à{" "}
-          <span className="font-medium">3</span> sur{" "}
-          <span className="font-medium">3</span> résultats
+          <span className="font-medium">4</span> sur{" "}
+          <span className="font-medium">4</span> résultats
         </div>
         <div className="flex space-x-2">
           <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
@@ -198,6 +315,13 @@ export default function EnseignantsPage() {
           </button>
         </div>
       </div>
+
+      {/* Composant AddTeacher */}
+      <AddTeacher
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

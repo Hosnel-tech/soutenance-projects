@@ -1,6 +1,13 @@
 "use client";
 import React from "react";
-import { CheckCircle, User, Mail, Building, MapPin } from "lucide-react";
+import {
+  CheckCircle,
+  User,
+  Mail,
+  Building,
+  MapPin,
+  BookOpen,
+} from "lucide-react";
 
 export default function Dashboard() {
   return (
@@ -32,10 +39,10 @@ export default function Dashboard() {
         <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
           <div className="flex items-center">
             <div className="p-2 bg-green-100 rounded-lg">
-              <Mail className="h-6 w-6 text-green-600" />
+              <BookOpen className="h-6 w-6 text-green-600" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Messages</p>
+              <p className="text-sm font-medium text-gray-600">Cours</p>
               <p className="text-2xl font-bold text-gray-900">567</p>
             </div>
           </div>
