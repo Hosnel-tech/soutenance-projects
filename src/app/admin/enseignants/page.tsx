@@ -1,12 +1,26 @@
 "use client";
 import React, { useState } from "react";
-import { Users, Plus, Search, Filter } from "lucide-react";
+import { Users, Plus, Search } from "lucide-react";
 import AddTeacher from "@/components/add_teacher";
 
 export default function EnseignantsPage() {
   const [showModal, setShowModal] = useState(false);
 
-  const handleSubmit = async (data: any) => {
+  interface TeacherFormData {
+    nom: string;
+    prenom: string;
+    ifru: string;
+    numeroCompte: string;
+    banque: string;
+    etablissement: string;
+    email: string;
+    telephone: string;
+    adresse: string;
+    matiere: string;
+    classe: string;
+  }
+
+  const handleSubmit = async (data: TeacherFormData) => {
     console.log("Données du formulaire:", data);
     // Ici vous pouvez ajouter la logique pour envoyer les données à votre API
     // Simuler un délai de traitement

@@ -1,56 +1,37 @@
 import React, { useState } from "react";
 
-interface TeacherFormData {
-  nom: string;
-  prenom: string;
-  ifru: string;
-  numeroCompte: string;
-  banque: string;
-  etablissement: string;
-  email: string;
-  telephone: string;
-  adresse: string;
+interface TDFormData {
+  titre: string;
   matiere: string;
   classe: string;
+  etablissement: string;
+  date: string;
+  duree: string;
+  description: string;
+  enseignant: string;
 }
 
-interface AddTeacherProps {
+interface AddTDProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: TeacherFormData) => void;
+  onSubmit: (data: TDFormData) => void;
 }
 
-export default function AddTeacher({
-  isOpen,
-  onClose,
-  onSubmit,
-}: AddTeacherProps) {
+export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
-  const [formData, setFormData] = useState<TeacherFormData>({
-    nom: "",
-    prenom: "",
-    ifru: "",
-    numeroCompte: "",
-    banque: "",
-    etablissement: "",
-    email: "",
-    telephone: "",
-    adresse: "",
+  const [formData, setFormData] = useState<TDFormData>({
+    titre: "",
     matiere: "",
     classe: "",
+    etablissement: "",
+    date: "",
+    duree: "",
+    description: "",
+    enseignant: "",
   });
 
-  const banques = [
-    "Ecobank",
-    "UBA",
-    "NSIA",
-    "BNP Paribas",
-    "Crédit Agricole",
-    "Société Générale",
-    "LCL",
-  ];
   const etablissements = ["Berger", "Palmier", "Pyramide"];
   const matieres = [
     "Anglais",
@@ -61,115 +42,54 @@ export default function AddTeacher({
     "Biologie",
     "Histoire",
     "Géographie",
+    "Informatique",
+    "Économie",
   ];
   const classes = [
     "CM2",
+    "6ème",
+    "5ème",
+    "4ème",
     "3ème",
+    "2nde",
     "1ère S",
     "1ère ES",
+    "1ère L",
     "Terminale S",
     "Terminale ES",
+    "Terminale L",
+  ];
+
+  const enseignants = [
+    "Jean Dupont",
+    "Marie Martin",
+    "Pierre Durand",
+    "Sophie Bernard",
+    "Paul Moreau",
+    "Claire Dubois",
+    "Michel Leroy",
+    "Anne Petit",
   ];
 
   const steps = [
     {
       id: 1,
-      name: "Informations personnelles",
-      description: "Identité et contact",
+      name: "Informations générales",
+      description: "Titre et matière du TD",
     },
     {
       id: 2,
-      name: "Informations professionnelles",
-      description: "Enseignement et établissement",
+      name: "Planning et lieu",
+      description: "Dates, horaires et salle",
     },
     {
       id: 3,
-      name: "Sécurité et finalisation",
-      description: "Compte et validation",
+      name: "Détails et validation",
+      description: "Description et finalisation",
     },
   ];
 
   // Icons as SVG components
-  const UserIcon = () => (
-    <svg
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-      />
-    </svg>
-  );
-
-  const MailIcon = () => (
-    <svg
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-      />
-    </svg>
-  );
-
-  const PhoneIcon = () => (
-    <svg
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-      />
-    </svg>
-  );
-
-  const BuildingIcon = () => (
-    <svg
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-      />
-    </svg>
-  );
-
-  const CreditCardIcon = () => (
-    <svg
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-      />
-    </svg>
-  );
-
   const BookOpenIcon = () => (
     <svg
       className="h-5 w-5"
@@ -204,6 +124,86 @@ export default function AddTeacher({
         strokeLinejoin="round"
         strokeWidth={2}
         d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+      />
+    </svg>
+  );
+
+  const BuildingIcon = () => (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+      />
+    </svg>
+  );
+
+  const CalendarIcon = () => (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+      />
+    </svg>
+  );
+
+  const ClockIcon = () => (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  );
+
+  const UserIcon = () => (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+      />
+    </svg>
+  );
+
+  const DocumentTextIcon = () => (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
       />
     </svg>
   );
@@ -246,7 +246,7 @@ export default function AddTeacher({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev: TeacherFormData) => ({
+    setFormData((prev: TDFormData) => ({
       ...prev,
       [name]: value,
     }));
@@ -269,17 +269,14 @@ export default function AddTeacher({
     try {
       await onSubmit(formData);
       setFormData({
-        nom: "",
-        prenom: "",
-        ifru: "",
-        numeroCompte: "",
-        banque: "",
-        etablissement: "",
-        email: "",
-        telephone: "",
-        adresse: "",
+        titre: "",
         matiere: "",
         classe: "",
+        etablissement: "",
+        date: "",
+        duree: "",
+        description: "",
+        enseignant: "",
       });
       setCurrentStep(1);
       onClose();
@@ -292,17 +289,14 @@ export default function AddTeacher({
 
   const handleClose = (): void => {
     setFormData({
-      nom: "",
-      prenom: "",
-      ifru: "",
-      numeroCompte: "",
-      banque: "",
-      etablissement: "",
-      email: "",
-      telephone: "",
-      adresse: "",
+      titre: "",
       matiere: "",
       classe: "",
+      etablissement: "",
+      date: "",
+      duree: "",
+      description: "",
+      enseignant: "",
     });
     setCurrentStep(1);
     onClose();
@@ -310,7 +304,7 @@ export default function AddTeacher({
 
   interface InputFieldProps {
     label: string;
-    name: keyof TeacherFormData;
+    name: keyof TDFormData;
     type?: string;
     placeholder: string;
     icon?: React.ComponentType;
@@ -325,7 +319,7 @@ export default function AddTeacher({
     icon: IconComponent,
     options = null,
   }) => {
-    const isTextArea = name === "adresse";
+    const isTextArea = name === "description";
     const isSelect = options !== null;
 
     return (
@@ -362,7 +356,7 @@ export default function AddTeacher({
               value={formData[name]}
               onChange={handleInputChange}
               placeholder={placeholder}
-              rows={3}
+              rows={4}
               className={`w-full ${
                 IconComponent ? "pl-12" : "pl-4"
               } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
@@ -389,43 +383,15 @@ export default function AddTeacher({
       case 1:
         return (
           <div className="space-y-6">
+            <InputField
+              label="Titre du TD"
+              name="titre"
+              placeholder="Ex: TD de Mathématiques - Équations du second degré"
+              icon={DocumentTextIcon}
+            />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InputField
-                label="Nom"
-                name="nom"
-                placeholder="Entrez le nom"
-                icon={UserIcon}
-              />
-              <InputField
-                label="Prénom"
-                name="prenom"
-                placeholder="Entrez le prénom"
-                icon={UserIcon}
-              />
-            </div>
-            <InputField
-              label="Adresse email"
-              name="email"
-              type="email"
-              placeholder="exemple@email.com"
-              icon={MailIcon}
-            />
-            <InputField
-              label="Numéro de téléphone"
-              name="telephone"
-              type="tel"
-              placeholder="+229 XX XX XX XX"
-              icon={PhoneIcon}
-            />
-          </div>
-        );
-
-      case 2:
-        return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <InputField
-                label="Matière enseignée"
+                label="Matière"
                 name="matiere"
                 placeholder="Sélectionner une matière"
                 icon={BookOpenIcon}
@@ -446,33 +412,46 @@ export default function AddTeacher({
               icon={BuildingIcon}
               options={etablissements}
             />
-            <InputField
-              label="Numéro IFRU"
-              name="ifru"
-              placeholder="Entrez le numéro IFRU"
-              icon={CreditCardIcon}
-            />
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                label="Date du TD"
+                name="date"
+                type="date"
+                placeholder="Sélectionner la date"
+                icon={CalendarIcon}
+              />
+              <InputField
+                label="Durée"
+                name="duree"
+                placeholder="Ex: 2h, 1h30, 45min"
+                icon={ClockIcon}
+              />
+            </div>
           </div>
         );
 
       case 3:
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <InputField
-                label="Numéro de compte bancaire"
-                name="numeroCompte"
-                placeholder="Entrez le numéro de compte"
-                icon={CreditCardIcon}
-              />
-              <InputField
-                label="Banque"
-                name="banque"
-                placeholder="Sélectionner une banque"
-                icon={BuildingIcon}
-                options={banques}
-              />
-            </div>
+            <InputField
+              label="Enseignant responsable"
+              name="enseignant"
+              placeholder="Sélectionner un enseignant"
+              icon={UserIcon}
+              options={enseignants}
+            />
+            <InputField
+              label="Description du TD"
+              name="description"
+              placeholder="Décrivez les objectifs, le contenu et les modalités du TD..."
+              icon={DocumentTextIcon}
+            />
           </div>
         );
 
@@ -490,7 +469,7 @@ export default function AddTeacher({
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold">Ajouter un enseignant</h2>
+              <h2 className="text-2xl font-bold">Ajouter un TD</h2>
               <p className="text-blue-100 mt-1">
                 {steps[currentStep - 1].description}
               </p>
@@ -582,7 +561,7 @@ export default function AddTeacher({
                 disabled={isSubmitting}
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
               >
-                {isSubmitting ? "Création..." : "Créer"}
+                {isSubmitting ? "Création..." : "Créer le TD"}
               </button>
             )}
           </div>

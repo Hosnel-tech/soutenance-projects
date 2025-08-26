@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
+import AddTd from "@/components/add_td";
+
 import {
   BookOpen,
   Plus,
   Search,
   Filter,
-  Calendar,
   Clock,
-  Users,
   FileText,
   Edit,
   Trash2,
@@ -18,6 +18,7 @@ import {
 export default function TDPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("tous");
+  const [showModal, setShowModal] = useState(false);
 
   // Données fictives pour les TD
   const tdList = [
@@ -25,7 +26,8 @@ export default function TDPage() {
       id: 1,
       titre: "TD Mathématiques - Algèbre linéaire",
       matiere: "Mathématiques",
-      niveau: "Terminale",
+      classe: "Terminale",
+      etablissement: "Berger",
       enseignant: "Jean Dupont",
       dateCreation: "2024-01-15",
       duree: "2h",
@@ -37,7 +39,8 @@ export default function TDPage() {
       id: 2,
       titre: "TD Physique - Mécanique",
       matiere: "Physique",
-      niveau: "1ère",
+      classe: "1ère",
+      etablissement: "Palmier",
       enseignant: "Marie Martin",
       dateCreation: "2024-01-10",
       duree: "1h30",
@@ -49,7 +52,8 @@ export default function TDPage() {
       id: 3,
       titre: "TD Chimie - Réactions acido-basiques",
       matiere: "Chimie",
-      niveau: "Terminale",
+      classe: "Terminale",
+      etablissement: "Pyramide",
       enseignant: "Pierre Durand",
       dateCreation: "2024-01-08",
       duree: "2h",
@@ -61,7 +65,8 @@ export default function TDPage() {
       id: 4,
       titre: "TD Biologie - Génétique",
       matiere: "Biologie",
-      niveau: "1ère",
+      classe: "1ère",
+      etablissement: "Berger",
       enseignant: "Sophie Bernard",
       dateCreation: "2024-01-05",
       duree: "1h45",
@@ -82,6 +87,23 @@ export default function TDPage() {
 
     return matchesSearch && matchesFilter;
   });
+
+  interface TDFormData {
+    titre: string;
+    matiere: string;
+    classe: string;
+    etablissement: string;
+    date: string;
+    duree: string;
+    description: string;
+    enseignant: string;
+  }
+
+  const handleSubmit = async (data: TDFormData) => {
+    console.log("Données du TD:", data);
+    // Ici vous pouvez ajouter la logique pour sauvegarder le TD
+    // Par exemple, appel API, mise à jour de l'état, etc.
+  };
 
   const getStatusBadge = (statut: string) => {
     switch (statut) {
@@ -130,7 +152,10 @@ export default function TDPage() {
             Gérez les TD, exercices et supports de cours
           </p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+        <button
+          onClick={() => setShowModal(true)}
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Créer un TD
         </button>
@@ -240,7 +265,10 @@ export default function TDPage() {
                   Enseignant
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Niveau
+                  Classe
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Établissement
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Durée
@@ -278,7 +306,10 @@ export default function TDPage() {
                     {td.enseignant}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {td.niveau}
+                    {td.classe}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {td.etablissement}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     <div className="flex items-center">
@@ -331,6 +362,13 @@ export default function TDPage() {
           </button>
         </div>
       </div>
+
+      {/* Composant AddTD */}
+      <AddTd
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }
