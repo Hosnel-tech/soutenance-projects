@@ -1,16 +1,6 @@
 "use client";
 import React from "react";
-import {
-  FileText,
-  Plus,
-  Search,
-  Filter,
-  Download,
-  Eye,
-  Edit,
-  Calendar,
-  Clock,
-} from "lucide-react";
+import { FileText, Plus, Search, Filter, Calendar, Clock } from "lucide-react";
 
 export default function TeacherEpreuvesPage() {
   return (
@@ -18,12 +8,8 @@ export default function TeacherEpreuvesPage() {
       {/* Header de la page */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Mes Épreuves
-          </h1>
-          <p className="text-gray-600">
-            Gérez vos épreuves et examens
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Mes Épreuves</h1>
+          <p className="text-gray-600">Gérez vos épreuves et examens</p>
         </div>
         <button className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
           <Plus className="h-4 w-4 mr-2" />
@@ -56,9 +42,6 @@ export default function TeacherEpreuvesPage() {
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-green-600" />
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                En cours
-              </span>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Contrôle Mathématiques
@@ -74,16 +57,6 @@ export default function TeacherEpreuvesPage() {
               <Clock className="h-4 w-4 mr-1" />
               <span>2h00 - 14h00 à 16h00</span>
             </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Edit className="h-4 w-4 mr-1 inline" />
-                Modifier
-              </button>
-            </div>
           </div>
         </div>
 
@@ -94,9 +67,6 @@ export default function TeacherEpreuvesPage() {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-blue-600" />
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                Terminée
-              </span>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Devoir Physique
@@ -112,16 +82,6 @@ export default function TeacherEpreuvesPage() {
               <Clock className="h-4 w-4 mr-1" />
               <span>1h30 - 10h00 à 11h30</span>
             </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Résultats
-              </button>
-              <button className="flex-1 py-2 px-3 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Export
-              </button>
-            </div>
           </div>
         </div>
 
@@ -132,9 +92,6 @@ export default function TeacherEpreuvesPage() {
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-purple-600" />
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                Programmée
-              </span>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Examen Chimie
@@ -150,16 +107,6 @@ export default function TeacherEpreuvesPage() {
               <Clock className="h-4 w-4 mr-1" />
               <span>3h00 - 8h00 à 11h00</span>
             </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Edit className="h-4 w-4 mr-1 inline" />
-                Modifier
-              </button>
-            </div>
           </div>
         </div>
 
@@ -170,9 +117,6 @@ export default function TeacherEpreuvesPage() {
               <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-orange-600" />
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                Terminée
-              </span>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               TD Probabilités
@@ -188,16 +132,6 @@ export default function TeacherEpreuvesPage() {
               <Clock className="h-4 w-4 mr-1" />
               <span>1h00 - 15h00 à 16h00</span>
             </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Résultats
-              </button>
-              <button className="flex-1 py-2 px-3 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Export
-              </button>
-            </div>
           </div>
         </div>
 
@@ -208,9 +142,6 @@ export default function TeacherEpreuvesPage() {
               <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-red-600" />
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                Programmée
-              </span>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Baccalauréat Blanc
@@ -226,16 +157,6 @@ export default function TeacherEpreuvesPage() {
               <Clock className="h-4 w-4 mr-1" />
               <span>4h00 - 8h00 à 12h00</span>
             </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Edit className="h-4 w-4 mr-1 inline" />
-                Modifier
-              </button>
-            </div>
           </div>
         </div>
 
@@ -246,9 +167,6 @@ export default function TeacherEpreuvesPage() {
               <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-indigo-600" />
               </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                En cours
-              </span>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Contrôle Continu
@@ -263,16 +181,6 @@ export default function TeacherEpreuvesPage() {
             <div className="flex items-center text-xs text-gray-500 mb-4">
               <Clock className="h-4 w-4 mr-1" />
               <span>1h30 - 9h00 à 10h30</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Edit className="h-4 w-4 mr-1 inline" />
-                Modifier
-              </button>
             </div>
           </div>
         </div>

@@ -8,10 +8,8 @@ import {
   Mail,
   Building,
   CreditCard,
-  MapPin,
   Phone,
   Lock,
-  CheckCircle,
   LayoutDashboard,
 } from "lucide-react";
 
@@ -88,7 +86,7 @@ export default function Home() {
       setIsSubmitting(false);
 
       // Rediriger vers le dashboard après création du compte
-      router.push("/admin/dashboard");
+      router.push("/teacher/dashboard");
     }, 1000);
   };
 

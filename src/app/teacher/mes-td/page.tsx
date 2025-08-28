@@ -2,7 +2,6 @@
 import React from "react";
 import {
   ClipboardList,
-  Plus,
   Search,
   Filter,
   Users,
@@ -49,10 +48,6 @@ export default function MesTDPage() {
           <h1 className="text-2xl font-bold text-gray-900">Mes TD</h1>
           <p className="text-gray-600">Gérez vos travaux dirigés et séances</p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
-          <Plus className="h-4 w-4 mr-2" />
-          Créer un TD
-        </button>
       </div>
 
       {/* Statistiques rapides */}
@@ -66,8 +61,8 @@ export default function MesTDPage() {
           <div className="text-sm text-gray-600">En cours</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
-          <div className="text-2xl font-bold text-yellow-600">4</div>
-          <div className="text-sm text-gray-600">Programmés</div>
+          <div className="text-2xl font-bold text-purple-600">4</div>
+          <div className="text-sm text-gray-600">Payé</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
           <div className="text-2xl font-bold text-gray-600">5</div>

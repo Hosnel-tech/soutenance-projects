@@ -1,13 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Eye,
-  EyeOff,
-  Mail,
-  Lock,
-  CheckCircle,
-  LayoutDashboard,
-} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Mail, Lock, LayoutDashboard } from "lucide-react";
 
 interface LoginData {
   email: string;
@@ -15,6 +10,7 @@ interface LoginData {
 }
 
 export default function Login() {
+  const router = useRouter();
   const [formData, setFormData] = useState<LoginData>({
     email: "",
     motDePasse: "",
@@ -39,6 +35,8 @@ export default function Login() {
     setTimeout(() => {
       console.log("Données de connexion:", formData);
       setIsSubmitting(false);
+      // Redirection vers le dashboard enseignant
+      router.push("/teacher/dashboard");
     }, 1000);
   };
 
@@ -119,13 +117,13 @@ export default function Login() {
         {/* Footer */}
         <div className="text-center mt-8 animate-slideUp">
           <p className="text-gray-600">
-            Vous n'avez pas de compte ?{" "}
-            <a
+            Vous n&apos;avez pas de compte ?{" "}
+            <Link
               href="/"
               className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
             >
-              S'inscrire
-            </a>
+              S&apos;inscrire
+            </Link>
           </p>
         </div>
       </div>
