@@ -125,9 +125,12 @@ export default function FinanceDashboard() {
                 </th>
                 <th
                   className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200"
-                  colSpan={7}
+                  colSpan={6}
                 >
                   Nombre d&apos;heures
+                </th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">
+                  Total
                 </th>
                 <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">
                   Matière
@@ -144,26 +147,17 @@ export default function FinanceDashboard() {
               </tr>
               <tr className="bg-gray-100">
                 <th className="px-4 py-2 text-xs text-gray-600 border-r border-gray-200"></th>
-                <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
+                <th className="px-1 py-2 text-xs text-gray-600 border-r border-gray-200" colSpan={2}>
                   27/04/2024
                 </th>
-                <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
-                  27/04/2024
+                <th className="px-1 py-2 text-xs text-gray-600 border-r border-gray-200" colSpan={2}>
+                  28/04/2024
+                </th>
+                <th className="px-1 py-2 text-xs text-gray-600 border-r border-gray-200" colSpan={2}>
+                  29/04/2024
                 </th>
                 <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
-                  27/04/2024
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
-                  27/04/2024
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
-                  27/04/2024
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
-                  27/04/2024
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-600 border-r border-gray-200">
-                  HEURE
+                  Total
                 </th>
                 <th className="px-4 py-2 text-xs text-gray-600 border-r border-gray-200"></th>
                 <th className="px-4 py-2 text-xs text-gray-600 border-r border-gray-200"></th>
@@ -172,34 +166,30 @@ export default function FinanceDashboard() {
               </tr>
               <tr className="bg-gray-200">
                 <th className="px-4 py-2 text-xs text-gray-700 border-r border-gray-300"></th>
-                <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  3 ème
+                <th className="px-1 py-2 text-xs text-gray-700 border-r border-gray-300">
+                  3ème
                 </th>
-                <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
+                <th className="px-1 py-2 text-xs text-gray-700 border-r border-gray-300">
+                  Tle
+                </th>
+                <th className="px-1 py-2 text-xs text-gray-700 border-r border-gray-300">
+                  3ème
+                </th>
+                <th className="px-1 py-2 text-xs text-gray-700 border-r border-gray-300">
+                  Tle
+                </th>
+                <th className="px-1 py-2 text-xs text-gray-700 border-r border-gray-300">
+                  3ème
+                </th>
+                <th className="px-1 py-2 text-xs text-gray-700 border-r border-gray-300">
                   Tle
                 </th>
                 <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  3 ème
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  Tle
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  3 ème
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  Tle
-                </th>
-                <th className="px-2 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  3 ème
+                  H
                 </th>
                 <th className="px-4 py-2 text-xs text-gray-700 border-r border-gray-300"></th>
-                <th className="px-4 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  3 ème
-                </th>
-                <th className="px-4 py-2 text-xs text-gray-700 border-r border-gray-300">
-                  Tle
-                </th>
+                <th className="px-4 py-2 text-xs text-gray-700 border-r border-gray-300"></th>
+                <th className="px-4 py-2 text-xs text-gray-700 border-r border-gray-300"></th>
                 <th className="px-4 py-2 text-xs text-gray-700"></th>
               </tr>
             </thead>
@@ -216,23 +206,23 @@ export default function FinanceDashboard() {
                 <td className="px-4 py-3 text-sm font-medium text-gray-900 border-r border-gray-200">
                   ADEBO Murywa
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   4
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
-                  0
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                  4
                 </td>
                 <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   8
@@ -256,23 +246,23 @@ export default function FinanceDashboard() {
                 <td className="px-4 py-3 text-sm font-medium text-gray-900 border-r border-gray-200">
                   AHOUANSOU Marcel
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   4
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
-                  0
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                  4
                 </td>
                 <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   8
@@ -296,23 +286,23 @@ export default function FinanceDashboard() {
                 <td className="px-4 py-3 text-sm font-medium text-gray-900 border-r border-gray-200">
                   ASSOGBA Ghislain
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   4
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   0
                 </td>
-                <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
-                  0
+                <td className="px-1 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
+                  4
                 </td>
                 <td className="px-2 py-3 text-sm text-gray-900 text-center border-r border-gray-200">
                   8
