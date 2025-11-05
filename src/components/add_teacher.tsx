@@ -12,6 +12,7 @@ interface TeacherFormData {
   adresse: string;
   matiere: string;
   classe: string;
+  password: string;
 }
 
 interface AddTeacherProps {
@@ -40,6 +41,7 @@ export default function AddTeacher({
     adresse: "",
     matiere: "",
     classe: "",
+    password: "",
   });
 
   const banques = [
@@ -280,6 +282,7 @@ export default function AddTeacher({
         adresse: "",
         matiere: "",
         classe: "",
+        password: "",
       });
       setCurrentStep(1);
       onClose();
@@ -303,6 +306,7 @@ export default function AddTeacher({
       adresse: "",
       matiere: "",
       classe: "",
+      password: "",
     });
     setCurrentStep(1);
     onClose();
@@ -341,13 +345,12 @@ export default function AddTeacher({
           )}
 
           {isSelect ? (
-            <select
+            <select aria-label={label}
               name={name}
               value={formData[name]}
               onChange={handleInputChange}
-              className={`w-full ${
-                IconComponent ? "pl-12" : "pl-4"
-              } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
+                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
             >
               <option value="">{placeholder}</option>
               {options.map((option: string) => (
@@ -363,9 +366,8 @@ export default function AddTeacher({
               onChange={handleInputChange}
               placeholder={placeholder}
               rows={3}
-              className={`w-full ${
-                IconComponent ? "pl-12" : "pl-4"
-              } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
+                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
             />
           ) : (
             <input
@@ -374,9 +376,8 @@ export default function AddTeacher({
               value={formData[name]}
               onChange={handleInputChange}
               placeholder={placeholder}
-              className={`w-full ${
-                IconComponent ? "pl-12" : "pl-4"
-              } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
+                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
             />
           )}
         </div>
@@ -472,6 +473,12 @@ export default function AddTeacher({
                 icon={BuildingIcon}
                 options={banques}
               />
+              <InputField
+                label="Mot de passe temporaire"
+                name="password"
+                type="password"
+                placeholder="Saisir un mot de passe provisoire"
+              />
             </div>
           </div>
         );
@@ -498,6 +505,8 @@ export default function AddTeacher({
             <button
               onClick={handleClose}
               className="text-white hover:text-blue-200 transition-colors p-2 hover:bg-white hover:bg-opacity-10 rounded-lg"
+              aria-label="Fermer"
+              title="Fermer"
             >
               <XIcon />
             </button>
@@ -511,23 +520,21 @@ export default function AddTeacher({
               <div key={step.id} className="flex items-center">
                 <div className="flex items-center">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                      step.id < currentStep
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step.id < currentStep
                         ? "bg-green-500 text-white"
                         : step.id === currentStep
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-600"
-                    }`}
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 text-gray-600"
+                      }`}
                   >
                     {step.id < currentStep ? <CheckCircleIcon /> : step.id}
                   </div>
                   <div className="ml-3 hidden sm:block">
                     <p
-                      className={`text-sm font-medium ${
-                        step.id <= currentStep
+                      className={`text-sm font-medium ${step.id <= currentStep
                           ? "text-gray-900"
                           : "text-gray-500"
-                      }`}
+                        }`}
                     >
                       {step.name}
                     </p>
@@ -535,9 +542,8 @@ export default function AddTeacher({
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`hidden sm:block w-20 h-1 mx-4 ${
-                      step.id < currentStep ? "bg-green-500" : "bg-gray-200"
-                    }`}
+                    className={`hidden sm:block w-20 h-1 mx-4 ${step.id < currentStep ? "bg-green-500" : "bg-gray-200"
+                      }`}
                   />
                 )}
               </div>

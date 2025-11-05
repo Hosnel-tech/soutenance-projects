@@ -15,9 +15,10 @@ interface AddTDProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: TDFormData) => void;
+  enseignants?: { id: number; name: string }[]; // liste dynamique
 }
 
-export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
+export default function AddTD({ isOpen, onClose, onSubmit, enseignants = [] }: AddTDProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -60,16 +61,7 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
     "Terminale L",
   ];
 
-  const enseignants = [
-    "Jean Dupont",
-    "Marie Martin",
-    "Pierre Durand",
-    "Sophie Bernard",
-    "Paul Moreau",
-    "Claire Dubois",
-    "Michel Leroy",
-    "Anne Petit",
-  ];
+  // Liste dynamique des enseignants passée en props (fallback déjà géré)
 
   const steps = [
     {
@@ -308,7 +300,7 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
     type?: string;
     placeholder: string;
     icon?: React.ComponentType;
-    options?: string[] | null;
+    options?: (string | { value: string | number; label: string })[] | null;
   }
 
   const InputField: React.FC<InputFieldProps> = ({
@@ -336,19 +328,22 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
 
           {isSelect ? (
             <select
+              aria-label={label}
               name={name}
               value={formData[name]}
               onChange={handleInputChange}
-              className={`w-full ${
-                IconComponent ? "pl-12" : "pl-4"
-              } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"} pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
             >
               <option value="">{placeholder}</option>
-              {options.map((option: string) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
+              {options.map((option) => {
+                const value = typeof option === 'string' ? option : option.value;
+                const label = typeof option === 'string' ? option : option.label;
+                return (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                );
+              })}
             </select>
           ) : isTextArea ? (
             <textarea
@@ -357,9 +352,8 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
               onChange={handleInputChange}
               placeholder={placeholder}
               rows={4}
-              className={`w-full ${
-                IconComponent ? "pl-12" : "pl-4"
-              } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
+                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
             />
           ) : (
             <input
@@ -368,9 +362,8 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
               value={formData[name]}
               onChange={handleInputChange}
               placeholder={placeholder}
-              className={`w-full ${
-                IconComponent ? "pl-12" : "pl-4"
-              } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
+                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
             />
           )}
         </div>
@@ -444,7 +437,7 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
               name="enseignant"
               placeholder="Sélectionner un enseignant"
               icon={UserIcon}
-              options={enseignants}
+              options={enseignants.map(e => ({ value: e.id, label: e.name }))}
             />
             <InputField
               label="Description du TD"
@@ -476,6 +469,8 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
             </div>
             <button
               onClick={handleClose}
+              aria-label="Fermer"
+              title="Fermer"
               className="text-white hover:text-blue-200 transition-colors p-2 hover:bg-white hover:bg-opacity-10 rounded-lg"
             >
               <XIcon />
@@ -490,23 +485,21 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
               <div key={step.id} className="flex items-center">
                 <div className="flex items-center">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                      step.id < currentStep
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step.id < currentStep
                         ? "bg-green-500 text-white"
                         : step.id === currentStep
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-600"
-                    }`}
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 text-gray-600"
+                      }`}
                   >
                     {step.id < currentStep ? <CheckCircleIcon /> : step.id}
                   </div>
                   <div className="ml-3 hidden sm:block">
                     <p
-                      className={`text-sm font-medium ${
-                        step.id <= currentStep
+                      className={`text-sm font-medium ${step.id <= currentStep
                           ? "text-gray-900"
                           : "text-gray-500"
-                      }`}
+                        }`}
                     >
                       {step.name}
                     </p>
@@ -514,9 +507,8 @@ export default function AddTD({ isOpen, onClose, onSubmit }: AddTDProps) {
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`hidden sm:block w-20 h-1 mx-4 ${
-                      step.id < currentStep ? "bg-green-500" : "bg-gray-200"
-                    }`}
+                    className={`hidden sm:block w-20 h-1 mx-4 ${step.id < currentStep ? "bg-green-500" : "bg-gray-200"
+                      }`}
                   />
                 )}
               </div>

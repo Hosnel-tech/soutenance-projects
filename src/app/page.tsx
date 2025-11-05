@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createEnseignant } from '@/lib/api';
 import {
   Eye,
   EyeOff,
@@ -20,6 +21,8 @@ interface FormData {
   numeroCompte: string;
   banque: string;
   etablissement: string;
+  matiere: string;
+  classe: string;
   email: string;
   telephone: string;
   adresse: string;
@@ -37,6 +40,8 @@ export default function Home() {
     numeroCompte: "",
     banque: "",
     etablissement: "",
+    matiere: "",
+    classe: "",
     email: "",
     telephone: "",
     adresse: "",
@@ -77,19 +82,41 @@ export default function Home() {
     setCurrentStep((prev) => prev - 1);
   };
 
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const handleSubmit = async () => {
+    if (formData.motDePasse !== formData.confirmMotDePasse) {
+      setErrorMsg('Les mots de passe ne correspondent pas');
+      return;
+    }
     setIsSubmitting(true);
-
-    // Simuler un délai de soumission
-    setTimeout(() => {
-      console.log("Données du formulaire:", formData);
+    setErrorMsg(null);
+    setSuccessMsg(null);
+    try {
+      await createEnseignant({
+        name: `${formData.prenom} ${formData.nom}`.trim(),
+        email: formData.email,
+        password: formData.motDePasse,
+        bank_name: formData.banque || undefined,
+        bank_account: formData.numeroCompte || undefined,
+        phone: formData.telephone || undefined,
+        establishment: formData.etablissement || undefined,
+        subject: (formData as any).matiere || undefined,
+        classe: (formData as any).classe || undefined,
+        ifru: formData.ifu || undefined,
+      });
+      setSuccessMsg('Compte créé. En attente de validation par un administrateur. Vous pourrez vous connecter après validation.');
       setIsSubmitting(false);
-
-      // Rediriger vers le dashboard après création du compte
-      router.push("/teacher/dashboard");
-    }, 1000);
+      // Reset sensible fields
+      setFormData(prev => ({ ...prev, motDePasse: '', confirmMotDePasse: '' }));
+    } catch (e: any) {
+      setIsSubmitting(false);
+      setErrorMsg(e.message || 'Erreur lors de la création du compte');
+    }
   };
 
+  // Step 1: Personal Information
   const renderStep1 = () => (
     <div className="space-y-6 animate-fadeIn">
       <div className="text-center mb-8">
@@ -101,56 +128,53 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="relative">
-          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
             type="text"
             name="nom"
             value={formData.nom}
             onChange={handleInputChange}
             placeholder="Nom"
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
           />
         </div>
 
         <div className="relative">
-          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
             type="text"
             name="prenom"
             value={formData.prenom}
             onChange={handleInputChange}
             placeholder="Prénom"
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
           />
         </div>
       </div>
 
       <div className="relative">
-        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleInputChange}
           placeholder="Adresse email"
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
         />
       </div>
 
       <div className="relative">
-        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type="tel"
           name="telephone"
           value={formData.telephone}
           onChange={handleInputChange}
           placeholder="Numéro de téléphone"
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
         />
       </div>
     </div>
   );
 
+  // Step 2: Professional Information
   const renderStep2 = () => (
     <div className="space-y-6 animate-fadeIn">
       <div className="text-center mb-8">
@@ -163,36 +187,35 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type="text"
           name="ifu"
           value={formData.ifu}
           onChange={handleInputChange}
           placeholder="Numéro IFU"
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
         />
       </div>
 
       <div className="relative">
-        <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type="text"
           name="numeroCompte"
           value={formData.numeroCompte}
           onChange={handleInputChange}
           placeholder="Numéro de compte bancaire"
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
         />
       </div>
 
       <div className="relative">
-        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <select
+          aria-label="Banque"
+          title="Banque"
           name="banque"
           value={formData.banque}
           onChange={handleInputChange}
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 appearance-none bg-white"
         >
           <option value="">Sélectionner votre banque</option>
           {banques.map((banque) => (
@@ -204,12 +227,13 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <select
+          aria-label="Établissement"
+          title="Établissement"
           name="etablissement"
           value={formData.etablissement}
           onChange={handleInputChange}
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 appearance-none bg-white"
         >
           <option value="">Sélectionner votre établissement</option>
           {etablissements.map((etablissement) => (
@@ -221,12 +245,13 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <select
-          name="etablissement"
-          value={formData.etablissement}
+          aria-label="Matière"
+          title="Matière"
+          name="matiere"
+          value={formData.matiere}
           onChange={handleInputChange}
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 appearance-none bg-white"
         >
           <option value="">Sélectionner votre matière</option>
           {matieres.map((matiere) => (
@@ -238,12 +263,13 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <select
-          name="etablissement"
-          value={formData.etablissement}
+          aria-label="Classe"
+          title="Classe"
+          name="classe"
+          value={formData.classe}
           onChange={handleInputChange}
-          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 appearance-none bg-white"
         >
           <option value="">Sélectionner votre classe</option>
           {classes.map((classe) => (
@@ -256,6 +282,7 @@ export default function Home() {
     </div>
   );
 
+  // Step 3: Final Information
   const renderStep3 = () => (
     <div className="space-y-6 animate-fadeIn">
       <div className="text-center mb-8">
@@ -266,14 +293,13 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type={showPassword ? "text" : "password"}
           name="motDePasse"
           value={formData.motDePasse}
           onChange={handleInputChange}
           placeholder="Mot de passe"
-          className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
         />
         <button
           type="button"
@@ -289,14 +315,13 @@ export default function Home() {
       </div>
 
       <div className="relative">
-        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type={showConfirmPassword ? "text" : "password"}
           name="confirmMotDePasse"
           value={formData.confirmMotDePasse}
           onChange={handleInputChange}
           placeholder="Confirmer le mot de passe"
-          className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200"
         />
         <button
           type="button"
@@ -318,13 +343,13 @@ export default function Home() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8 animate-slideDown">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+          {/* <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
             <LayoutDashboard className="h-10 w-10 text-white" />
-          </div>
+          </div> */}
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            EduTD Manager
+            S'inscrire
           </h1>
-          <p className="text-gray-600">Créez votre compte pour commencer</p>
+          {/* <p className="text-gray-600">Créez votre compte pour commencer</p> */}
         </div>
 
         {/* Progress Steps */}
@@ -333,19 +358,17 @@ export default function Home() {
             {[1, 2, 3].map((step) => (
               <div key={step} className="flex items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
-                    step <= currentStep
-                      ? "bg-[#004B70] text-white"
-                      : "bg-gray-200 text-gray-500"
-                  }`}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${step <= currentStep
+                    ? "bg-[#004B70] text-white"
+                    : "bg-gray-200 text-gray-500"
+                    }`}
                 >
                   {step}
                 </div>
                 {step < 3 && (
                   <div
-                    className={`w-8 h-1 mx-2 transition-all duration-300 ${
-                      step < currentStep ? "bg-[#004B70]" : "bg-gray-200"
-                    }`}
+                    className={`w-8 h-1 mx-2 transition-all duration-300 ${step < currentStep ? "bg-[#004B70]" : "bg-gray-200"
+                      }`}
                   />
                 )}
               </div>
@@ -355,6 +378,8 @@ export default function Home() {
 
         {/* Form Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 animate-slideUp">
+          {successMsg && <div className="mb-4 p-3 rounded-md bg-green-50 text-green-700 text-sm border border-green-200">{successMsg}</div>}
+          {errorMsg && <div className="mb-4 p-3 rounded-md bg-red-50 text-red-600 text-sm border border-red-200">{errorMsg}</div>}
           <div>
             {currentStep === 1 && renderStep1()}
             {currentStep === 2 && renderStep2()}
@@ -377,7 +402,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-[#004B70] text-white rounded-lg hover:from-blue-600 hover:to-[#004B70] transition-all duration-200 transform hover:scale-105"
+                    className="px-6 py-3 bg-[#004B70] text-white rounded-lg hover:from-blue-600 hover:to-[#004B70] transition-all duration-200 transform hover:scale-105"
                   >
                     Suivant
                   </button>
@@ -404,7 +429,7 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 animate-slideUp">
+        <div className="text-center animate-slideUp mt-6">
           <p className="text-gray-600">
             Vous avez déjà un compte ?{" "}
             <a

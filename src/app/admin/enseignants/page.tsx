@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { Users, Plus, Search } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Users, Plus, Search, CheckCircle2, Loader2, Trash2 } from "lucide-react";
 import AddTeacher from "@/components/add_teacher";
+import { listEnseignants, validerEnseignant, deleteEnseignant, createEnseignant } from "@/lib/api";
 
 export default function EnseignantsPage() {
   const [showModal, setShowModal] = useState(false);
@@ -18,14 +19,47 @@ export default function EnseignantsPage() {
     adresse: string;
     matiere: string;
     classe: string;
+    password: string;
   }
 
-  const handleSubmit = async (data: TeacherFormData) => {
-    console.log("Données du formulaire:", data);
-    // Ici vous pouvez ajouter la logique pour envoyer les données à votre API
-    // Simuler un délai de traitement
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  const [teachers, setTeachers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+
+  const load = async () => {
+    setLoading(true); setError(null);
+    try {
+      const data = await listEnseignants();
+      setTeachers(data);
+    } catch (e: any) { setError(e.message); }
+    finally { setLoading(false); }
   };
+  useEffect(() => { load(); }, []);
+
+  const handleSubmit = async (data: TeacherFormData) => {
+    try {
+      await createEnseignant({
+        name: data.prenom + ' ' + data.nom,
+        email: data.email,
+        password: data.password || 'ChangeMe!123',
+        bank_name: data.banque,
+        bank_account: data.numeroCompte,
+        phone: data.telephone,
+        establishment: data.etablissement,
+        subject: data.matiere,
+        classe: data.classe,
+        ifru: data.ifru,
+      });
+      setShowModal(false);
+      load();
+    } catch (e: any) { alert(e.message); }
+  };
+
+  const onValidate = async (id: number) => { try { await validerEnseignant(id); load(); } catch (e: any) { alert(e.message); } };
+  const onDelete = async (id: number) => { if (!confirm('Supprimer ?')) return; try { await deleteEnseignant(id); load(); } catch (e: any) { alert(e.message); } };
+
+  const filtered = teachers.filter(t => (t.name || '').toLowerCase().includes(search.toLowerCase()) || (t.email || '').toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="space-y-6">
@@ -55,6 +89,8 @@ export default function EnseignantsPage() {
           <input
             type="text"
             placeholder="Rechercher un enseignant..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
@@ -96,215 +132,43 @@ export default function EnseignantsPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Banque
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Classe
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Classe</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              <tr className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Users className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jean Dupont
+              {loading && <tr><td colSpan={9} className="px-6 py-6 text-center text-gray-500 text-sm"><Loader2 className="h-4 w-4 inline animate-spin mr-2" />Chargement...</td></tr>}
+              {!loading && filtered.map(t => (
+                <tr key={t.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className={`h-10 w-10 rounded-full flex items-center justify-center ${t.is_validated ? 'bg-green-100' : 'bg-yellow-100'}`}>
+                        <Users className={`h-5 w-5 ${t.is_validated ? 'text-green-600' : 'text-yellow-600'}`} />
                       </div>
-                      <div className="text-sm text-gray-500">
-                        jean.dupont@email.com
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Mathématiques
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Lycée Berger
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  +33 6 12 34 56 78
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                    IFRU001
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
-                  1234 5678 9012 3456
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  BNP Paribas
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                    Terminale S
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3">
-                    Modifier
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                      <Users className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        Marie Martin
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        marie.martin@email.com
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">{t.name}</div>
+                        <div className="text-xs text-gray-500">{t.email}</div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Français
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Lycée Palmier
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  +33 6 98 76 54 32
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                    IFRU002
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
-                  9876 5432 1098 7654
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Crédit Agricole
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                    1ère S
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3">
-                    Modifier
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <Users className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        Pierre Durand
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        pierre.durand@email.com
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Histoire
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Lycée Pyramide
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  +33 6 45 67 89 01
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                    IFRU003
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
-                  4567 8901 2345 6789
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Société Générale
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                    Terminale ES
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3">
-                    Modifier
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
-                      <Users className="h-5 w-5 text-orange-600" />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        Sophie Bernard
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        sophie.bernard@email.com
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Biologie
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Lycée Berger
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  +33 6 23 45 67 89
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                    IFRU004
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
-                  2345 6789 0123 4567
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  LCL
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                    1ère S
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3">
-                    Modifier
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.subject || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.establishment || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.phone || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.ifru || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">{t.bank_account || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.bank_name || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.classe || '—'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.is_validated ? <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Validé</span> : <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
+                    {!t.is_validated && <button onClick={() => onValidate(t.id)} className="text-green-600 hover:text-green-900 flex items-center gap-1"><CheckCircle2 className="h-4 w-4" />Valider</button>}
+                    <button onClick={() => onDelete(t.id)} className="text-red-600 hover:text-red-900 flex items-center gap-1"><Trash2 className="h-4 w-4" />Supprimer</button>
+                  </td>
+                </tr>
+              ))}
+              {!loading && filtered.length === 0 && <tr><td colSpan={9} className="px-6 py-6 text-center text-gray-500 text-sm">Aucun résultat</td></tr>}
             </tbody>
           </table>
         </div>
@@ -313,9 +177,7 @@ export default function EnseignantsPage() {
       {/* Pagination */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-700">
-          Affichage de <span className="font-medium">1</span> à{" "}
-          <span className="font-medium">4</span> sur{" "}
-          <span className="font-medium">4</span> résultats
+          {teachers.length} enseignants ({filtered.length} affichés)
         </div>
         <div className="flex space-x-2">
           <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">

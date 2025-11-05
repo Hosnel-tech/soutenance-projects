@@ -1,276 +1,133 @@
 "use client";
-import React from "react";
-import {
-  FileText,
-  Plus,
-  Search,
-  Filter,
-  Download,
-  Eye,
-  Trash2,
-} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Plus, Search, Loader2, Edit, Trash2, X, Save } from "lucide-react";
+import { listEpreuves, createEpreuve, updateEpreuve, deleteEpreuve } from "@/lib/api";
 
-export default function DocumentsPage() {
+interface Epreuve {
+  id: number;
+  titre: string;
+  description?: string;
+}
+
+export default function AdminEpreuvesPage() {
+  const [items, setItems] = useState<Epreuve[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Epreuve | null>(null);
+  const [form, setForm] = useState({ titre: "", description: "" });
+  const [saving, setSaving] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data: any = await listEpreuves();
+      const list = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.data)
+          ? data.data
+          : [];
+      setItems(list);
+    } catch (e: any) {
+      setError(e.message || "Erreur inattendue");
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => { load(); }, []);
+
+  const resetForm = () => { setForm({ titre: "", description: "" }); setEditing(null); };
+  const startCreate = () => { resetForm(); setShowForm(true); };
+  const startEdit = (ep: Epreuve) => { setEditing(ep); setForm({ titre: ep.titre, description: ep.description || "" }); setShowForm(true); };
+  const submit = async () => {
+    if (!form.titre.trim()) { alert("Titre requis"); return; }
+    setSaving(true);
+    try {
+      if (editing) await updateEpreuve(editing.id, form);
+      else await createEpreuve(form);
+      setShowForm(false);
+      resetForm();
+      load();
+    } catch (e: any) {
+      alert(e.message || "Erreur lors de l'enregistrement");
+    } finally { setSaving(false); }
+  };
+  const remove = async (id: number) => {
+    if (!confirm("Supprimer cette épreuve ?")) return;
+    try { await deleteEpreuve(id); load(); } catch (e: any) { alert(e.message); }
+  };
+  const filtered = (items || []).filter(i => (i.titre || "").toLowerCase().includes(search.toLowerCase()));
+
   return (
     <div className="space-y-6">
-      {/* Header de la page */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Gestion des Documents
-          </h1>
-          <p className="text-gray-600">
-            Gérez les documents et ressources pédagogiques
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Gestion des Épreuves</h1>
+          <p className="text-gray-600">Créer, modifier et supprimer les épreuves disponibles</p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
-          <Plus className="h-4 w-4 mr-2" />
-          Ajouter un document
+        <button onClick={startCreate} className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+          <Plus className="h-4 w-4 mr-2" /> Nouvelle épreuve
         </button>
       </div>
-
-      {/* Barre de recherche et filtres */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Rechercher un document..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-        <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
-          <Filter className="h-4 w-4 mr-2" />
-          Filtres
-        </button>
-      </div>
-
-      {/* Grille des documents */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Document 1 */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-blue-600" />
-              </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                PDF
-              </span>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Programme Mathématiques Terminale
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Programme officiel de mathématiques pour la classe de terminale
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-              <span>Ajouté le 15/03/2024</span>
-              <span>2.5 MB</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Télécharger
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Document 2 */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-green-600" />
-              </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                DOCX
-              </span>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Fiches de révision Français
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Fiches de révision pour le baccalauréat de français
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-              <span>Ajouté le 12/03/2024</span>
-              <span>1.8 MB</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Télécharger
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Document 3 */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-purple-600" />
-              </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                XLSX
-              </span>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Grille d'évaluation
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Grille d'évaluation standardisée pour les examens
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-              <span>Ajouté le 10/03/2024</span>
-              <span>0.9 MB</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Télécharger
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Document 4 */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-orange-600" />
-              </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                PPTX
-              </span>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Présentation Histoire
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Présentation PowerPoint sur la Révolution française
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-              <span>Ajouté le 08/03/2024</span>
-              <span>5.2 MB</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Télécharger
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Document 5 */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-red-600" />
-              </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                ZIP
-              </span>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Ressources Sciences
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Archive contenant des ressources pour les sciences
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-              <span>Ajouté le 05/03/2024</span>
-              <span>15.7 MB</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Télécharger
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Document 6 */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-indigo-600" />
-              </div>
-              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                PDF
-              </span>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Guide pédagogique
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Guide complet pour les enseignants
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-              <span>Ajouté le 01/03/2024</span>
-              <span>8.3 MB</span>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
-                <Eye className="h-4 w-4 mr-1 inline" />
-                Voir
-              </button>
-              <button className="flex-1 py-2 px-3 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors duration-200">
-                <Download className="h-4 w-4 mr-1 inline" />
-                Télécharger
-              </button>
-            </div>
-          </div>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher une épreuve..." className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
         </div>
       </div>
-
-      {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-700">
-          Affichage de <span className="font-medium">1</span> à{" "}
-          <span className="font-medium">6</span> sur{" "}
-          <span className="font-medium">6</span> résultats
-        </div>
-        <div className="flex space-x-2">
-          <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-            Précédent
-          </button>
-          <button className="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md">
-            1
-          </button>
-          <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-            Suivant
-          </button>
-        </div>
+      {error && <div className="text-sm text-red-600">{error}</div>}
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {loading && <tr><td colSpan={3} className="px-6 py-6 text-center text-gray-500 text-sm"><Loader2 className="h-4 w-4 inline animate-spin mr-2" />Chargement...</td></tr>}
+            {!loading && filtered.map(ep => (
+              <tr key={ep.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{ep.titre}</td>
+                <td className="px-6 py-4 text-sm text-gray-600 max-w-md truncate" title={ep.description}>{ep.description || '—'}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm flex gap-2">
+                  <button onClick={() => startEdit(ep)} className="px-2 py-1 text-xs inline-flex items-center gap-1 rounded bg-amber-100 text-amber-700 hover:bg-amber-200"><Edit className="h-4 w-4" />Edit</button>
+                  <button onClick={() => remove(ep.id)} className="px-2 py-1 text-xs inline-flex items-center gap-1 rounded bg-red-100 text-red-700 hover:bg-red-200"><Trash2 className="h-4 w-4" />Del</button>
+                </td>
+              </tr>
+            ))}
+            {!loading && filtered.length === 0 && <tr><td colSpan={3} className="px-6 py-6 text-center text-gray-500 text-sm">Aucune épreuve</td></tr>}
+          </tbody>
+        </table>
       </div>
+      {showForm && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-lg">
+            <div className="flex items-center justify-between px-4 py-3 border-b">
+              <h2 className="text-lg font-semibold">{editing ? 'Modifier' : 'Nouvelle'} épreuve</h2>
+              <button onClick={() => { setShowForm(false); resetForm(); }} aria-label="Fermer le formulaire" title="Fermer" className="text-gray-500 hover:text-gray-700"><X className="h-5 w-5" /></button>
+            </div>
+            <div className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                <input value={form.titre} onChange={e => setForm(f => ({ ...f, titre: e.target.value }))} placeholder="Titre de l'épreuve" aria-label="Titre de l'épreuve" className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={4} placeholder="Description de l'épreuve" aria-label="Description de l'épreuve" className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none" />
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 px-4 py-3 border-t bg-gray-50">
+              <button disabled={saving} onClick={() => { setShowForm(false); resetForm(); }} className="px-4 py-2 text-sm rounded-md border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50">Annuler</button>
+              <button disabled={saving} onClick={submit} className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50">{saving && <Loader2 className="h-4 w-4 animate-spin" />}<Save className="h-4 w-4" /> Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

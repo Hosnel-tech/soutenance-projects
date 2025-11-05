@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { logout } from "@/lib/api";
 import { useRouter, usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -88,8 +89,8 @@ export default function AdminLayout({
     setSidebarOpen(false); // Ferme le sidebar sur mobile
   };
 
-  const handleLogout = () => {
-    // Ici vous pouvez ajouter la logique de déconnexion
+  const handleLogout = async () => {
+    await logout();
     router.push("/");
   };
 
@@ -97,9 +98,8 @@ export default function AdminLayout({
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar pour mobile */}
       <div
-        className={`fixed inset-0 z-50 lg:hidden ${
-          sidebarOpen ? "block" : "hidden"
-        }`}
+        className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? "block" : "hidden"
+          }`}
       >
         <div
           className="fixed inset-0 bg-gray-600 bg-opacity-75"
@@ -110,7 +110,7 @@ export default function AdminLayout({
             <h2 className="text-lg font-semibold text-gray-900">
               Administration
             </h2>
-            <button
+            <button aria-label="Fermer le menu"
               onClick={() => setSidebarOpen(false)}
               className="text-gray-400 hover:text-gray-600"
             >
@@ -122,18 +122,16 @@ export default function AdminLayout({
               <button
                 key={item.name}
                 onClick={() => handleNavigation(item.href)}
-                className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  item.current
+                className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${item.current
                     ? "bg-blue-100 text-blue-700 border-r-2 border-blue-500"
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 <item.icon
-                  className={`mr-3 h-5 w-5 flex-shrink-0 ${
-                    item.current
+                  className={`mr-3 h-5 w-5 flex-shrink-0 ${item.current
                       ? "text-blue-500"
                       : "text-gray-400 group-hover:text-gray-500"
-                  }`}
+                    }`}
                 />
                 {item.name}
               </button>
@@ -172,18 +170,16 @@ export default function AdminLayout({
               <button
                 key={item.name}
                 onClick={() => handleNavigation(item.href)}
-                className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  item.current
+                className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${item.current
                     ? "bg-blue-100 text-blue-700 border-r-2 border-blue-500"
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 <item.icon
-                  className={`mr-3 h-5 w-5 flex-shrink-0 ${
-                    item.current
+                  className={`mr-3 h-5 w-5 flex-shrink-0 ${item.current
                       ? "text-blue-500"
                       : "text-gray-400 group-hover:text-gray-500"
-                  }`}
+                    }`}
                 />
                 {item.name}
               </button>
@@ -207,7 +203,7 @@ export default function AdminLayout({
       <div className="lg:pl-64">
         {/* Header mobile */}
         <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm lg:hidden">
-          <button
+          <button aria-label="Ouvrir le menu"
             type="button"
             className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
             onClick={() => setSidebarOpen(true)}

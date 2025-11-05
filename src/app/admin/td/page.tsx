@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddTd from "@/components/add_td";
+import { listTDsAdmin, createTd, terminerTd, payerTd, listEnseignants } from "@/lib/api";
 
 import {
   BookOpen,
@@ -19,73 +20,34 @@ export default function TDPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("tous");
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [tdList, setTdList] = useState<any[]>([]);
+  const [meta, setMeta] = useState<any | null>(null);
+  const [page, setPage] = useState(1);
+  const [enseignants, setEnseignants] = useState<any[]>([]);
 
-  // Données fictives pour les TD
-  const tdList = [
-    {
-      id: 1,
-      titre: "TD Mathématiques - Algèbre linéaire",
-      matiere: "Mathématiques",
-      classe: "Terminale",
-      etablissement: "Berger",
-      enseignant: "Jean Dupont",
-      dateCreation: "2024-01-15",
-      duree: "2h",
-      etudiants: 25,
-      statut: "en cours",
-      description: "Exercices sur les matrices et déterminants",
-    },
-    {
-      id: 2,
-      titre: "TD Physique - Mécanique",
-      matiere: "Physique",
-      classe: "1ère",
-      etablissement: "Palmier",
-      enseignant: "Marie Martin",
-      dateCreation: "2024-01-10",
-      duree: "1h30",
-      etudiants: 30,
-      statut: "terminé",
-      description: "Problèmes de cinématique et dynamique",
-    },
-    {
-      id: 3,
-      titre: "TD Chimie - Réactions acido-basiques",
-      matiere: "Chimie",
-      classe: "Terminale",
-      etablissement: "Pyramide",
-      enseignant: "Pierre Durand",
-      dateCreation: "2024-01-08",
-      duree: "2h",
-      etudiants: 28,
-      statut: "payé",
-      description: "Équilibres chimiques et pH",
-    },
-    {
-      id: 4,
-      titre: "TD Biologie - Génétique",
-      matiere: "Biologie",
-      classe: "1ère",
-      etablissement: "Berger",
-      enseignant: "Sophie Bernard",
-      dateCreation: "2024-01-05",
-      duree: "1h45",
-      etudiants: 22,
-      statut: "en attente",
-      description: "Hérédité et croisements génétiques",
-    },
-  ];
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await listTDsAdmin({ statut: selectedFilter, page });
+      setTdList(data.data || data); // paginate structure or simple array
+      setMeta(data.meta || null);
+    } catch (e: any) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchData(); }, [selectedFilter, page]);
+  useEffect(() => { (async () => { try { const ens = await listEnseignants(); setEnseignants(ens); } catch (e) { console.error(e); } })(); }, []);
 
   const filteredTD = tdList.filter((td) => {
+    const enseignantName = td.enseignant?.name || "";
     const matchesSearch =
-      td.titre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      td.matiere.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      td.enseignant.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesFilter =
-      selectedFilter === "tous" || td.statut === selectedFilter;
-
-    return matchesSearch && matchesFilter;
+      (td.titre || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      enseignantName.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch; // statut already filtered server-side
   });
 
   interface TDFormData {
@@ -99,11 +61,28 @@ export default function TDPage() {
     enseignant: string;
   }
 
-  const handleSubmit = async (data: TDFormData) => {
-    console.log("Données du TD:", data);
-    // Ici vous pouvez ajouter la logique pour sauvegarder le TD
-    // Par exemple, appel API, mise à jour de l'état, etc.
+  const handleSubmit = async (data: any) => {
+    const enseignantId = Number(data.enseignant) || null;
+    if (!enseignantId) { alert('Veuillez sélectionner un enseignant'); return; }
+    try {
+      await createTd({
+        epreuve_id: 1, // TODO: sélection réelle d'épreuve à ajouter plus tard
+        enseignant_id: enseignantId,
+        titre: data.titre,
+        description: data.description,
+        montant: 0,
+      });
+      setShowModal(false);
+      fetchData();
+    } catch (e: any) {
+      alert(e.message);
+    }
   };
+
+  const onTerminer = async (id: number) => {
+    try { await terminerTd(id); fetchData(); } catch (e: any) { alert(e.message); }
+  };
+  const onPayer = async (id: number) => { try { await payerTd(id); fetchData(); } catch (e: any) { alert(e.message); } };
 
   const getStatusBadge = (statut: string) => {
     switch (statut) {
@@ -184,7 +163,7 @@ export default function TDPage() {
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500">TD En cours</p>
               <p className="text-lg font-semibold text-gray-900">
-                {tdList.filter((td) => td.statut === "en cours").length}
+                {tdList.filter((td) => td.statut === "en_cours").length}
               </p>
             </div>
           </div>
@@ -208,7 +187,7 @@ export default function TDPage() {
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500">TD Terminés</p>
               <p className="text-lg font-semibold text-gray-900">
-                {tdList.filter((td) => td.statut === "terminé").length}
+                {tdList.filter((td) => td.statut === "termine").length}
               </p>
             </div>
           </div>
@@ -227,16 +206,16 @@ export default function TDPage() {
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
-        <select
+        <select aria-label="Filtrer par statut"
           value={selectedFilter}
           onChange={(e) => setSelectedFilter(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="tous">Tous les statuts</option>
-          <option value="en attente">En attente</option>
-          <option value="en cours">En cours</option>
-          <option value="terminé">Terminé</option>
-          <option value="payé">Payé</option>
+          <option value="en_attente">En attente</option>
+          <option value="en_cours">En cours</option>
+          <option value="termine">Terminé</option>
+          <option value="paye">Payé</option>
         </select>
         <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
           <Filter className="h-4 w-4 mr-2" />
@@ -282,7 +261,10 @@ export default function TDPage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredTD.map((td) => (
+              {loading && (
+                <tr><td colSpan={8} className="px-6 py-8 text-center text-gray-500">Chargement...</td></tr>
+              )}
+              {!loading && filteredTD.map((td) => (
                 <tr key={td.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -300,10 +282,10 @@ export default function TDPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {td.matiere}
+                    {td.epreuve?.titre || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {td.enseignant}
+                    {td.enseignant?.name || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {td.classe}
@@ -318,20 +300,20 @@ export default function TDPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {getStatusBadge(td.statut)}
+                    {getStatusBadge(td.statut.replace('_', ' '))}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50">
+                      <button title="Terminer" aria-label="Terminer" onClick={() => onTerminer(td.id)} className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50">
                         <Eye className="h-4 w-4" />
                       </button>
-                      <button className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50">
+                      <button title="Payer" aria-label="Payer" onClick={() => onPayer(td.id)} className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50">
                         <Download className="h-4 w-4" />
                       </button>
-                      <button className="text-orange-600 hover:text-orange-900 p-1 rounded hover:bg-orange-50">
+                      <button title="Éditer" aria-label="Éditer" className="text-orange-600 hover:text-orange-900 p-1 rounded hover:bg-orange-50">
                         <Edit className="h-4 w-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50">
+                      <button title="Supprimer" aria-label="Supprimer" className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -368,6 +350,7 @@ export default function TDPage() {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onSubmit={handleSubmit}
+        enseignants={enseignants.map(e => ({ id: e.id, name: e.name }))}
       />
     </div>
   );

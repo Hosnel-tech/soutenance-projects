@@ -1,20 +1,15 @@
 "use client";
 import React, { useState } from "react";
+import { login } from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, LayoutDashboard } from "lucide-react";
 
-interface LoginData {
-  email: string;
-  motDePasse: string;
-}
+interface LoginData { email: string; password: string; }
 
 export default function Login() {
   const router = useRouter();
-  const [formData, setFormData] = useState<LoginData>({
-    email: "",
-    motDePasse: "",
-  });
+  const [formData, setFormData] = useState<LoginData>({ email: "", password: "" });
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -30,14 +25,23 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simuler un délai de connexion
-    setTimeout(() => {
-      console.log("Données de connexion:", formData);
+    try {
+      const res = await login(formData.email, formData.password);
       setIsSubmitting(false);
-      // Redirection vers le dashboard enseignant
-      router.push("/teacher/dashboard");
-    }, 1000);
+      const role = res.user?.role;
+      if (role === "admin") router.push("/admin");
+      else if (role === "comptable") router.push("/comptable");
+      else if (role === 'enseignant') router.push("/teacher/dashboard");
+      else router.push('/');
+    } catch (e: any) {
+      setIsSubmitting(false);
+      const msg = e.message || 'Erreur de connexion';
+      if (msg.includes('non validé')) {
+        alert('Votre compte enseignant doit être validé par un administrateur.');
+      } else {
+        alert(msg);
+      }
+    }
   };
 
   return (
@@ -76,8 +80,8 @@ export default function Login() {
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
                 type={showPassword ? "text" : "password"}
-                name="motDePasse"
-                value={formData.motDePasse}
+                name="password"
+                value={formData.password}
                 onChange={handleInputChange}
                 placeholder="Mot de passe"
                 required

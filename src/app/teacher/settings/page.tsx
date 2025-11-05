@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   User,
   Mail,
@@ -14,19 +14,82 @@ import {
   MapPin,
 } from "lucide-react";
 
+import { me, updateTeacherProfile } from "@/lib/api";
+
 export default function TeacherSettingsPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [notifications, setNotifications] = useState({
-    email: true,
-    push: false,
-    sms: true,
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
+  const [form, setForm] = useState<any>({
+    name: "",
+    email: "",
+    phone: "",
+    establishment: "",
+    subject: "",
+    experience_years: "",
+    password: "",
   });
+  const [notifications, setNotifications] = useState({ email: true, push: false, sms: true });
+  const [displayPrefs, setDisplayPrefs] = useState({ theme: 'Clair', lang: 'Français', tz: 'Europe/Paris (UTC+1)' });
+
+  const load = async () => {
+    setLoading(true); setError(null);
+    try {
+      const u = await me();
+      setProfile(u);
+      setForm(f => ({ ...f, name: u.name || '', email: u.email || '', phone: u.phone || '', establishment: u.establishment || '', subject: u.subject || '', experience_years: u.experience_years || '' }));
+      if (u.settings?.notifications) setNotifications({
+        email: !!u.settings.notifications.email,
+        push: !!u.settings.notifications.push,
+        sms: !!u.settings.notifications.sms,
+      });
+      if (u.settings?.display) setDisplayPrefs({
+        theme: u.settings.display.theme || 'Clair',
+        lang: u.settings.display.lang || 'Français',
+        tz: u.settings.display.tz || 'Europe/Paris (UTC+1)',
+      });
+    } catch (e: any) { setError(e.message); }
+    finally { setLoading(false); }
+  };
+  useEffect(() => { load(); }, []);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target; setForm((f: any) => ({ ...f, [name]: value }));
+  };
 
   const handleNotificationChange = (type: string) => {
     setNotifications((prev) => ({
       ...prev,
       [type]: !prev[type as keyof typeof prev],
     }));
+  };
+
+  const save = async () => {
+    setSaving(true); setError(null); setSuccess(false);
+    try {
+      const payload: any = {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        establishment: form.establishment,
+        subject: form.subject,
+        experience_years: form.experience_years ? Number(form.experience_years) : null,
+        settings: {
+          notifications,
+          display: displayPrefs,
+        }
+      };
+      if (form.password) payload.password = form.password;
+      const updated = await updateTeacherProfile(payload);
+      setProfile(updated);
+      setForm((f: any) => ({ ...f, password: "" }));
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (e: any) { setError(e.message); }
+    finally { setSaving(false); }
   };
 
   return (
@@ -41,6 +104,9 @@ export default function TeacherSettingsPage() {
         </div>
       </div>
 
+      {loading && <div className="text-sm text-gray-500">Chargement...</div>}
+      {error && <div className="text-sm text-red-600">{error}</div>}
+      {success && <div className="text-sm text-green-600">Profil mis à jour</div>}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Menu de navigation des paramètres */}
         <div className="lg:col-span-1">
@@ -111,21 +177,13 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Prénom
                 </label>
-                <input
-                  type="text"
-                  defaultValue="Jean"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
+                <input name="name" value={form.name} onChange={onChange} disabled={loading} aria-label="Nom" title="Nom" type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Nom
                 </label>
-                <input
-                  type="text"
-                  defaultValue="Dupont"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
+                <input name="surname" value={""} disabled aria-label="Nom de famille (placeholder)" title="Nom de famille" type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -133,11 +191,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="email"
-                    defaultValue="jean.dupont@etablissement.fr"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                  <input name="email" value={form.email} onChange={onChange} disabled={loading} type="email" aria-label="Email" title="Email" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
               <div>
@@ -146,11 +200,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="tel"
-                    defaultValue="+33 1 23 45 67 89"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                  <input name="phone" value={form.phone} onChange={onChange} disabled={loading} type="tel" aria-label="Téléphone" title="Téléphone" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
               <div className="md:col-span-2">
@@ -159,33 +209,26 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="text"
-                    defaultValue="Lycée Victor Hugo"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                  <input name="establishment" value={form.establishment} onChange={onChange} disabled={loading} type="text" aria-label="Établissement" title="Établissement" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Matière principale
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                  <option>Mathématiques</option>
-                  <option>Physique</option>
-                  <option>Chimie</option>
-                  <option>Sciences</option>
+                <select name="subject" value={form.subject} onChange={onChange} disabled={loading} title="Matière" aria-label="Matière" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100">
+                  <option value="">(Choisir)</option>
+                  <option value="Mathématiques">Mathématiques</option>
+                  <option value="Physique">Physique</option>
+                  <option value="Chimie">Chimie</option>
+                  <option value="Sciences">Sciences</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Années d&apos;expérience
                 </label>
-                <input
-                  type="number"
-                  defaultValue="8"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
+                <input name="experience_years" value={form.experience_years} onChange={onChange} disabled={loading} type="number" aria-label="Années d'expérience" title="Années d'expérience" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
               </div>
             </div>
           </div>
@@ -204,10 +247,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                  <input name="current_password" disabled type={showPassword ? "text" : "password"} aria-label="Mot de passe actuel" title="Mot de passe actuel" placeholder="Mot de passe actuel" className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg bg-gray-100" />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -228,10 +268,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="password"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                  <input name="password" value={form.password} onChange={onChange} disabled={loading} type="password" aria-label="Nouveau mot de passe" title="Nouveau mot de passe" placeholder="Nouveau mot de passe" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
 
@@ -241,10 +278,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="password"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
+                  <input disabled type="password" aria-label="Confirmation mot de passe (inactif)" title="Confirmation mot de passe (inactif)" placeholder="Confirmation" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-100" />
                 </div>
               </div>
 
@@ -344,10 +378,10 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Thème
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                  <option>Clair</option>
-                  <option>Sombre</option>
-                  <option>Automatique</option>
+                <select value={displayPrefs.theme} onChange={e => setDisplayPrefs(p => ({ ...p, theme: e.target.value }))} title="Thème" aria-label="Thème" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <option value="Clair">Clair</option>
+                  <option value="Sombre">Sombre</option>
+                  <option value="Automatique">Automatique</option>
                 </select>
               </div>
 
@@ -355,10 +389,10 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Langue
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                  <option>Français</option>
-                  <option>English</option>
-                  <option>Español</option>
+                <select value={displayPrefs.lang} onChange={e => setDisplayPrefs(p => ({ ...p, lang: e.target.value }))} title="Langue" aria-label="Langue" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <option value="Français">Français</option>
+                  <option value="English">English</option>
+                  <option value="Español">Español</option>
                 </select>
               </div>
 
@@ -366,10 +400,10 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Fuseau horaire
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                  <option>Europe/Paris (UTC+1)</option>
-                  <option>Europe/London (UTC+0)</option>
-                  <option>America/New_York (UTC-5)</option>
+                <select value={displayPrefs.tz} onChange={e => setDisplayPrefs(p => ({ ...p, tz: e.target.value }))} title="Fuseau horaire" aria-label="Fuseau horaire" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <option value="Europe/Paris (UTC+1)">Europe/Paris (UTC+1)</option>
+                  <option value="Europe/London (UTC+0)">Europe/London (UTC+0)</option>
+                  <option value="America/New_York (UTC-5)">America/New_York (UTC-5)</option>
                 </select>
               </div>
             </div>
@@ -377,12 +411,9 @@ export default function TeacherSettingsPage() {
 
           {/* Boutons d'action */}
           <div className="flex justify-end space-x-4">
-            <button className="px-6 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              Annuler
-            </button>
-            <button className="inline-flex items-center px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
-              <Save className="h-4 w-4 mr-2" />
-              Enregistrer
+            <button disabled={saving || loading} onClick={() => load()} className="px-6 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50">Réinitialiser</button>
+            <button disabled={saving || loading} onClick={save} className="inline-flex items-center px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 disabled:opacity-50">
+              {saving ? <span className="flex items-center"><Save className="h-4 w-4 mr-2 animate-pulse" />Enregistrement...</span> : <><Save className="h-4 w-4 mr-2" />Enregistrer</>}
             </button>
           </div>
         </div>
