@@ -40,7 +40,7 @@ export default function TeacherEpreuvesPage() {
           <p className="text-gray-600">Gérez vos épreuves et examens</p>
         </div>
         {!creating && (
-          <button onClick={() => setCreating(true)} className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+          <button onClick={() => setCreating(true)} className="inline-flex items-center px-4 py-2 bg-[#004B70] text-white text-sm font-medium rounded-lg hover:bg-[#003A5A] transition-colors duration-200">
             <Plus className="h-4 w-4 mr-2" />
             Créer une épreuve
           </button>

@@ -118,13 +118,13 @@ export default function TeacherLayout({
                 key={item.name}
                 onClick={() => handleNavigation(item.href)}
                 className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${item.current
-                  ? "bg-green-100 text-green-700 border-r-2 border-green-500"
+                  ? "bg-blue-50 text-[#004B70] border-r-2 border-[#004B70]"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }`}
               >
                 <item.icon
                   className={`mr-3 h-5 w-5 flex-shrink-0 ${item.current
-                    ? "text-green-500"
+                    ? "text-[#004B70]"
                     : "text-gray-400 group-hover:text-gray-500"
                     }`}
                 />
@@ -150,7 +150,7 @@ export default function TeacherLayout({
           {/* Logo et titre */}
           <div className="flex h-16 items-center px-4 border-b border-gray-200">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-[#004B70] to-[#0077b6] rounded-lg flex items-center justify-center mr-3">
                 <GraduationCap className="h-5 w-5 text-white" />
               </div>
               <h1 className="text-lg font-semibold text-gray-900">
@@ -166,13 +166,13 @@ export default function TeacherLayout({
                 key={item.name}
                 onClick={() => handleNavigation(item.href)}
                 className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${item.current
-                  ? "bg-green-100 text-green-700 border-r-2 border-green-500"
+                  ? "bg-blue-50 text-[#004B70] border-r-2 border-[#004B70]"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }`}
               >
                 <item.icon
                   className={`mr-3 h-5 w-5 flex-shrink-0 ${item.current
-                    ? "text-green-500"
+                    ? "text-[#004B70]"
                     : "text-gray-400 group-hover:text-gray-500"
                     }`}
                 />

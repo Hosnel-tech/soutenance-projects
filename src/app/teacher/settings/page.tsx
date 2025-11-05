@@ -23,7 +23,18 @@ export default function TeacherSettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [profile, setProfile] = useState<any>(null);
-  const [form, setForm] = useState<any>({
+
+  interface FormState {
+    name: string;
+    email: string;
+    phone: string;
+    establishment: string;
+    subject: string;
+    experience_years: string | number;
+    password: string;
+  }
+
+  const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
     phone: "",
@@ -32,6 +43,7 @@ export default function TeacherSettingsPage() {
     experience_years: "",
     password: "",
   });
+
   const [notifications, setNotifications] = useState({ email: true, push: false, sms: true });
   const [displayPrefs, setDisplayPrefs] = useState({ theme: 'Clair', lang: 'Français', tz: 'Europe/Paris (UTC+1)' });
 
@@ -106,7 +118,7 @@ export default function TeacherSettingsPage() {
 
       {loading && <div className="text-sm text-gray-500">Chargement...</div>}
       {error && <div className="text-sm text-red-600">{error}</div>}
-      {success && <div className="text-sm text-green-600">Profil mis à jour</div>}
+      {success && <div className="text-sm text-[#004B70]">Profil mis à jour</div>}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Menu de navigation des paramètres */}
         <div className="lg:col-span-1">
@@ -117,7 +129,7 @@ export default function TeacherSettingsPage() {
             <nav className="space-y-2">
               <a
                 href="#profile"
-                className="flex items-center px-3 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-lg"
+                className="flex items-center px-3 py-2 text-sm font-medium text-[#004B70] bg-blue-50 rounded-lg"
               >
                 <User className="h-4 w-4 mr-3" />
                 Profil
@@ -152,17 +164,17 @@ export default function TeacherSettingsPage() {
           {/* Section Profil */}
           <div id="profile" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <User className="h-5 w-5 mr-2 text-green-600" />
+              <User className="h-5 w-5 mr-2 text-[#004B70]" />
               Informations personnelles
             </h2>
 
             {/* Photo de profil */}
             <div className="flex items-center mb-6">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                <User className="h-10 w-10 text-green-600" />
+              <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mr-4">
+                <User className="h-10 w-10 text-[#004B70]" />
               </div>
               <div>
-                <button className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+                <button className="inline-flex items-center px-4 py-2 bg-[#004B70] text-white text-sm font-medium rounded-lg hover:bg-[#003d5d] transition-colors duration-200">
                   <Camera className="h-4 w-4 mr-2" />
                   Changer la photo
                 </button>
@@ -177,7 +189,7 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Prénom
                 </label>
-                <input name="name" value={form.name} onChange={onChange} disabled={loading} aria-label="Nom" title="Nom" type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
+                <input name="name" value={form.name} onChange={onChange} disabled={loading} aria-label="Nom" title="Nom" type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -191,7 +203,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input name="email" value={form.email} onChange={onChange} disabled={loading} type="email" aria-label="Email" title="Email" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
+                  <input name="email" value={form.email} onChange={onChange} disabled={loading} type="email" aria-label="Email" title="Email" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
               <div>
@@ -200,7 +212,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input name="phone" value={form.phone} onChange={onChange} disabled={loading} type="tel" aria-label="Téléphone" title="Téléphone" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
+                  <input name="phone" value={form.phone} onChange={onChange} disabled={loading} type="tel" aria-label="Téléphone" title="Téléphone" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
               <div className="md:col-span-2">
@@ -209,14 +221,14 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input name="establishment" value={form.establishment} onChange={onChange} disabled={loading} type="text" aria-label="Établissement" title="Établissement" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
+                  <input name="establishment" value={form.establishment} onChange={onChange} disabled={loading} type="text" aria-label="Établissement" title="Établissement" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Matière principale
                 </label>
-                <select name="subject" value={form.subject} onChange={onChange} disabled={loading} title="Matière" aria-label="Matière" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100">
+                <select name="subject" value={form.subject} onChange={onChange} disabled={loading} title="Matière" aria-label="Matière" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100">
                   <option value="">(Choisir)</option>
                   <option value="Mathématiques">Mathématiques</option>
                   <option value="Physique">Physique</option>
@@ -228,7 +240,7 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Années d&apos;expérience
                 </label>
-                <input name="experience_years" value={form.experience_years} onChange={onChange} disabled={loading} type="number" aria-label="Années d'expérience" title="Années d'expérience" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
+                <input name="experience_years" value={form.experience_years} onChange={onChange} disabled={loading} type="number" aria-label="Années d'expérience" title="Années d'expérience" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100" />
               </div>
             </div>
           </div>
@@ -236,7 +248,7 @@ export default function TeacherSettingsPage() {
           {/* Section Sécurité */}
           <div id="security" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Lock className="h-5 w-5 mr-2 text-green-600" />
+              <Lock className="h-5 w-5 mr-2 text-[#004B70]" />
               Sécurité
             </h2>
 
@@ -268,7 +280,7 @@ export default function TeacherSettingsPage() {
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input name="password" value={form.password} onChange={onChange} disabled={loading} type="password" aria-label="Nouveau mot de passe" title="Nouveau mot de passe" placeholder="Nouveau mot de passe" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100" />
+                  <input name="password" value={form.password} onChange={onChange} disabled={loading} type="password" aria-label="Nouveau mot de passe" title="Nouveau mot de passe" placeholder="Nouveau mot de passe" className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent disabled:bg-gray-100" />
                 </div>
               </div>
 
@@ -299,7 +311,7 @@ export default function TeacherSettingsPage() {
           {/* Section Notifications */}
           <div id="notifications" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Bell className="h-5 w-5 mr-2 text-green-600" />
+              <Bell className="h-5 w-5 mr-2 text-[#004B70]" />
               Notifications
             </h2>
 
@@ -320,7 +332,7 @@ export default function TeacherSettingsPage() {
                     onChange={() => handleNotificationChange("email")}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#004B70]"></div>
                 </label>
               </div>
 
@@ -340,7 +352,7 @@ export default function TeacherSettingsPage() {
                     onChange={() => handleNotificationChange("push")}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#004B70]"></div>
                 </label>
               </div>
 
@@ -360,7 +372,7 @@ export default function TeacherSettingsPage() {
                     onChange={() => handleNotificationChange("sms")}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#004B70]"></div>
                 </label>
               </div>
             </div>
@@ -369,7 +381,7 @@ export default function TeacherSettingsPage() {
           {/* Section Affichage */}
           <div id="display" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Monitor className="h-5 w-5 mr-2 text-green-600" />
+              <Monitor className="h-5 w-5 mr-2 text-[#004B70]" />
               Préférences d&apos;affichage
             </h2>
 
@@ -378,7 +390,7 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Thème
                 </label>
-                <select value={displayPrefs.theme} onChange={e => setDisplayPrefs(p => ({ ...p, theme: e.target.value }))} title="Thème" aria-label="Thème" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select value={displayPrefs.theme} onChange={e => setDisplayPrefs(p => ({ ...p, theme: e.target.value }))} title="Thème" aria-label="Thème" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent">
                   <option value="Clair">Clair</option>
                   <option value="Sombre">Sombre</option>
                   <option value="Automatique">Automatique</option>
@@ -389,7 +401,7 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Langue
                 </label>
-                <select value={displayPrefs.lang} onChange={e => setDisplayPrefs(p => ({ ...p, lang: e.target.value }))} title="Langue" aria-label="Langue" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select value={displayPrefs.lang} onChange={e => setDisplayPrefs(p => ({ ...p, lang: e.target.value }))} title="Langue" aria-label="Langue" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent">
                   <option value="Français">Français</option>
                   <option value="English">English</option>
                   <option value="Español">Español</option>
@@ -400,7 +412,7 @@ export default function TeacherSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Fuseau horaire
                 </label>
-                <select value={displayPrefs.tz} onChange={e => setDisplayPrefs(p => ({ ...p, tz: e.target.value }))} title="Fuseau horaire" aria-label="Fuseau horaire" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select value={displayPrefs.tz} onChange={e => setDisplayPrefs(p => ({ ...p, tz: e.target.value }))} title="Fuseau horaire" aria-label="Fuseau horaire" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent">
                   <option value="Europe/Paris (UTC+1)">Europe/Paris (UTC+1)</option>
                   <option value="Europe/London (UTC+0)">Europe/London (UTC+0)</option>
                   <option value="America/New_York (UTC-5)">America/New_York (UTC-5)</option>
@@ -412,7 +424,7 @@ export default function TeacherSettingsPage() {
           {/* Boutons d'action */}
           <div className="flex justify-end space-x-4">
             <button disabled={saving || loading} onClick={() => load()} className="px-6 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50">Réinitialiser</button>
-            <button disabled={saving || loading} onClick={save} className="inline-flex items-center px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 disabled:opacity-50">
+            <button disabled={saving || loading} onClick={save} className="inline-flex items-center px-6 py-2 bg-[#004B70] text-white text-sm font-medium rounded-lg hover:bg-[#003d5d] transition-colors duration-200 disabled:opacity-50">
               {saving ? <span className="flex items-center"><Save className="h-4 w-4 mr-2 animate-pulse" />Enregistrement...</span> : <><Save className="h-4 w-4 mr-2" />Enregistrer</>}
             </button>
           </div>

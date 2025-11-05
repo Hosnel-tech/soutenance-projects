@@ -49,9 +49,6 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8 animate-slideDown">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
-            <LayoutDashboard className="h-10 w-10 text-white" />
-          </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             EduTD Manager
           </h1>
@@ -104,7 +101,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full py-3 bg-[#004B70] text-white rounded-lg hover:bg-[#003d5d] transition-all duration-200 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-md hover:shadow-lg"
             >
               {isSubmitting ? (
                 <>
@@ -124,7 +121,7 @@ export default function Login() {
             Vous n&apos;avez pas de compte ?{" "}
             <Link
               href="/"
-              className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
+              className="text-[#004B70] hover:text-[#004B70] hover:underline font-medium transition-colors"
             >
               S&apos;inscrire
             </Link>

@@ -411,7 +411,7 @@ export default function Home() {
                     type="button"
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="px-8 py-3 bg-gradient-to-r from-[#0F673B] to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                    className="px-8 py-3 bg-[#0F673B] text-white rounded-lg hover:bg-[#0e5e35] transition-all duration-200 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 shadow-md hover:shadow-lg"
                   >
                     {isSubmitting ? (
                       <>
@@ -434,7 +434,7 @@ export default function Home() {
             Vous avez déjà un compte ?{" "}
             <a
               href="/login"
-              className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
+              className="text-[#004B70] hover:text-[#004B70] hover:underline font-medium transition-colors"
             >
               Se connecter
             </a>
