@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { User, ClipboardList, FileText, CheckCircle, Loader2 } from "lucide-react";
+import { User, ClipboardList, FileText, CheckCircle, Loader2, Clock } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface Stats {
@@ -53,35 +53,69 @@ export default function Dashboard() {
       {stats && !loading && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard icon={User} label="Utilisateurs" value={stats.users_total} color="blue" />
-            <StatCard icon={ClipboardList} label="TD total" value={stats.tds_total} color="green" />
-            <StatCard icon={FileText} label="Épreuves" value={stats.epreuves_total} color="purple" />
-            <StatCard icon={CheckCircle} label="TD payés" value={stats.tds_paye} color="orange" />
+            <StatCard icon={User} label="Utilisateurs" value={stats.users_total} color="#004B70" />
+            <StatCard icon={ClipboardList} label="TD total" value={stats.tds_total} color="#0F673B" />
+            <StatCard icon={FileText} label="Épreuves" value={stats.epreuves_total} color="#EE2E33" />
+            <StatCard icon={CheckCircle} label="TD payés" value={stats.tds_paye} color="#FDBB2C" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-sm border p-6 lg:col-span-2">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Répartition TD</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <MiniStat label="En cours" value={stats.tds_en_cours} color="blue" />
-                <MiniStat label="Terminés" value={stats.tds_termine} color="green" />
-                <MiniStat label="Payés" value={stats.tds_paye} color="orange" />
-                <MiniStat label="Enseignants" value={stats.enseignants_valides} color="indigo" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Section Répartition TD */}
+            <div className="bg-white rounded-xl shadow-lg p-6 lg:col-span-2 border border-gray-100">
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <ClipboardList className="h-5 w-5 mr-2 text-[#004B70]" />
+                Répartition TD
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <MiniStat 
+                  label="En cours" 
+                  value={stats.tds_en_cours} 
+                  color="#004B70" 
+                />
+                <MiniStat 
+                  label="Terminés" 
+                  value={stats.tds_termine} 
+                  color="#0F673B" 
+                />
+                <MiniStat 
+                  label="Payés" 
+                  value={stats.tds_paye} 
+                  color="#FDBB2C" 
+                />
+                <MiniStat 
+                  label="Enseignants" 
+                  value={stats.enseignants_valides} 
+                  color="#004B70" 
+                />
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Activité récente</h2>
-              <ul className="space-y-3 max-h-72 overflow-y-auto pr-2 text-sm">
-                {stats.recent.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="mt-1 h-2 w-2 rounded-full bg-gray-400" />
-                    <div>
-                      <p className="text-gray-800">{item.message}</p>
-                      <p className="text-xs text-gray-500">{item.created_at_diff}</p>
-                    </div>
-                  </li>
-                ))}
-                {stats.recent.length === 0 && (<li className="text-gray-500 text-xs">Aucune activité.</li>)}
+
+            {/* Section Activité récente */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <Clock className="h-5 w-5 mr-2 text-[#004B70]" />
+                Activité récente
+              </h2>
+              <ul className="space-y-4 max-h-[340px] overflow-y-auto pr-2">
+                {stats.recent.length > 0 ? (
+                  stats.recent.map((item, i) => (
+                    <li key={i} className="flex items-start group">
+                      <div className="flex-shrink-0 mt-1.5">
+                        <span className="h-2 w-2 rounded-full bg-[#004B70] block group-hover:bg-[#003A5A] transition-colors"></span>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-gray-800 group-hover:text-gray-900 transition-colors">
+                          {item.message}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-0.5">
+                          {item.created_at_diff}
+                        </p>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-sm text-gray-500 italic">Aucune activité récente</li>
+                )}
               </ul>
             </div>
           </div>
@@ -95,35 +129,97 @@ export default function Dashboard() {
 
 interface StatCardProps { icon: any; label: string; value: number; color: string; }
 function StatCard({ icon: Icon, label, value, color }: StatCardProps) {
-  const colorMap: Record<string, string> = {
-    blue: 'bg-blue-100 text-blue-600 border-blue-500',
-    green: 'bg-green-100 text-green-600 border-green-500',
-    purple: 'bg-purple-100 text-purple-600 border-purple-500',
-    orange: 'bg-orange-100 text-orange-600 border-orange-500',
-    indigo: 'bg-indigo-100 text-indigo-600 border-indigo-500'
+  // Couleurs personnalisées avec des styles en ligne
+  const getColorStyles = (color: string) => {
+    const styles = {
+      '#004B70': {
+        bg: 'bg-[#E6F0F5]',
+        text: 'text-[#004B70]',
+        border: 'border-l-4 border-[#004B70]',
+        iconBg: 'bg-[#D1E5F0]',
+        iconColor: '#004B70'
+      },
+      '#0F673B': {
+        bg: 'bg-[#E6F5EC]',
+        text: 'text-[#0F673B]',
+        border: 'border-l-4 border-[#0F673B]',
+        iconBg: 'bg-[#D1F0E0]',
+        iconColor: '#0F673B'
+      },
+      '#EE2E33': {
+        bg: 'bg-[#FEEBEC]',
+        text: 'text-[#EE2E33]',
+        border: 'border-l-4 border-[#EE2E33]',
+        iconBg: 'bg-[#FCD6D8]',
+        iconColor: '#EE2E33'
+      },
+      '#FDBB2C': {
+        bg: 'bg-[#FFF8E6]',
+        text: 'text-[#E6A500]',
+        border: 'border-l-4 border-[#FDBB2C]',
+        iconBg: 'bg-[#FEF0C0]',
+        iconColor: '#E6A500'
+      }
+    };
+    
+    return styles[color as keyof typeof styles] || {
+      bg: 'bg-gray-100',
+      text: 'text-gray-600',
+      border: 'border-l-4 border-gray-400',
+      iconBg: 'bg-gray-200',
+      iconColor: '#6B7280'
+    };
   };
+
+  const colorStyles = getColorStyles(color);
+
   return (
-    <div className={`bg-white rounded-xl shadow-sm border p-6 flex items-center`}>
-      <div className={`p-2 rounded-lg ${colorMap[color].split(' ').slice(0, 2).join(' ')}`}> <Icon className={`h-6 w-6 ${colorMap[color].split(' ')[1]}`} /> </div>
+    <div className={`bg-white rounded-xl shadow-md p-6 flex items-center ${colorStyles.border} hover:shadow-lg transition-shadow duration-200`}>
+      <div className={`p-2.5 rounded-lg ${colorStyles.iconBg}`}>
+        <Icon className="h-5 w-5" style={{ color: colorStyles.iconColor }} />
+      </div>
       <div className="ml-4">
-        <p className="text-sm text-gray-500">{label}</p>
-        <p className="text-2xl font-bold text-gray-900">{value}</p>
+        <p className="text-sm text-gray-600">{label}</p>
+        <p className={`text-2xl font-bold mt-1 ${colorStyles.text}`}>{value}</p>
       </div>
     </div>
   );
 }
 
 function MiniStat({ label, value, color }: { label: string; value: number; color: string; }) {
-  const colorClasses: Record<string, string> = {
-    blue: 'bg-blue-50 text-blue-700',
-    green: 'bg-green-50 text-green-700',
-    orange: 'bg-orange-50 text-orange-700',
-    indigo: 'bg-indigo-50 text-indigo-700'
+  // Styles pour les MiniStats avec les couleurs personnalisées
+  const getColorStyles = (color: string) => {
+    const styles = {
+      '#004B70': {
+        bg: 'bg-[#E6F0F5]',
+        text: 'text-[#004B70]',
+        border: 'border-[#B8D4E5]'
+      },
+      '#0F673B': {
+        bg: 'bg-[#E6F5EC]',
+        text: 'text-[#0F673B]',
+        border: 'border-[#B8E5CF]'
+      },
+      '#FDBB2C': {
+        bg: 'bg-[#FFF8E6]',
+        text: 'text-[#E6A500]',
+        border: 'border-[#FEE9B0]'
+      }
+    };
+    
+    return styles[color as keyof typeof styles] || {
+      bg: 'bg-gray-50',
+      text: 'text-gray-700',
+      border: 'border-gray-200'
+    };
   };
+
+  const colorStyles = getColorStyles(color);
+
   return (
-    <div className={`rounded-lg border px-3 py-3 ${colorClasses[color]}`}>
-      <p className="text-xs font-medium uppercase tracking-wide">{label}</p>
-      <p className="mt-1 text-xl font-semibold">{value}</p>
+    <div className={`rounded-xl p-4 border ${colorStyles.bg} ${colorStyles.border} hover:shadow-sm transition-all`}>
+      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
+      <p className={`mt-1 text-xl font-semibold ${colorStyles.text}`}>{value}</p>
     </div>
   );
 }

@@ -75,7 +75,7 @@ export default function EnseignantsPage() {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          className="inline-flex items-center px-4 py-2 bg-[#004B70] text-white text-sm font-medium rounded-lg hover:bg-[#003A5A] transition-colors duration-200"
         >
           <Plus className="h-4 w-4 mr-2" />
           Ajouter un enseignant
@@ -91,7 +91,7 @@ export default function EnseignantsPage() {
             placeholder="Rechercher un enseignant..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-transparent"
           />
         </div>
         {/* <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
@@ -183,7 +183,9 @@ export default function EnseignantsPage() {
           <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
             Précédent
           </button>
-          <button className="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md">
+          <button
+            className="px-2.5 py-1.5 text-xs font-medium text-white bg-[#004B70] hover:bg-[#003A5A] rounded-md transition-colors duration-200"
+          >
             1
           </button>
           <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">

@@ -349,8 +349,7 @@ export default function AddTeacher({
               name={name}
               value={formData[name]}
               onChange={handleInputChange}
-              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
-                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"} pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
             >
               <option value="">{placeholder}</option>
               {options.map((option: string) => (
@@ -366,8 +365,7 @@ export default function AddTeacher({
               onChange={handleInputChange}
               placeholder={placeholder}
               rows={3}
-              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
-                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"} pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 resize-none border-gray-300 bg-white hover:border-gray-400`}
             />
           ) : (
             <input
@@ -376,8 +374,7 @@ export default function AddTeacher({
               value={formData[name]}
               onChange={handleInputChange}
               placeholder={placeholder}
-              className={`w-full ${IconComponent ? "pl-12" : "pl-4"
-                } pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
+              className={`w-full ${IconComponent ? "pl-12" : "pl-4"} pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#004B70] focus:border-[#004B70] transition-all duration-200 border-gray-300 bg-white hover:border-gray-400`}
             />
           )}
         </div>
@@ -494,17 +491,17 @@ export default function AddTeacher({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
+        <div className="bg-gradient-to-r from-[#004B70] to-[#003A5A] px-6 py-4 text-white">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold">Ajouter un enseignant</h2>
-              <p className="text-blue-100 mt-1">
+              <p className="text-[#E6F0F5] mt-1">
                 {steps[currentStep - 1].description}
               </p>
             </div>
             <button
               onClick={handleClose}
-              className="text-white hover:text-blue-200 transition-colors p-2 hover:bg-white hover:bg-opacity-10 rounded-lg"
+              className="text-white hover:text-[#D1E5F0] transition-colors p-2 hover:bg-white hover:bg-opacity-10 rounded-lg"
               aria-label="Fermer"
               title="Fermer"
             >
@@ -520,21 +517,21 @@ export default function AddTeacher({
               <div key={step.id} className="flex items-center">
                 <div className="flex items-center">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step.id < currentStep
-                        ? "bg-green-500 text-white"
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
+                      step.id < currentStep
+                        ? "bg-[#0F673B] text-white"
                         : step.id === currentStep
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-600"
-                      }`}
+                        ? "bg-[#004B70] text-white"
+                        : "bg-gray-200 text-gray-600"
+                    }`}
                   >
                     {step.id < currentStep ? <CheckCircleIcon /> : step.id}
                   </div>
                   <div className="ml-3 hidden sm:block">
                     <p
-                      className={`text-sm font-medium ${step.id <= currentStep
-                          ? "text-gray-900"
-                          : "text-gray-500"
-                        }`}
+                      className={`text-sm font-medium ${
+                        step.id <= currentStep ? "text-gray-900" : "text-gray-500"
+                      }`}
                     >
                       {step.name}
                     </p>
@@ -542,8 +539,9 @@ export default function AddTeacher({
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`hidden sm:block w-20 h-1 mx-4 ${step.id < currentStep ? "bg-green-500" : "bg-gray-200"
-                      }`}
+                    className={`hidden sm:block w-20 h-1 mx-4 ${
+                      step.id < currentStep ? "bg-[#0F673B]" : "bg-gray-200"
+                    }`}
                   />
                 )}
               </div>
@@ -578,7 +576,7 @@ export default function AddTeacher({
             {currentStep < 3 ? (
               <button
                 onClick={nextStep}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="px-6 py-2 bg-[#004B70] text-white rounded-lg hover:bg-[#003A5A] transition-colors font-medium"
               >
                 Suivant →
               </button>
@@ -586,7 +584,7 @@ export default function AddTeacher({
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
+                className="px-6 py-2 bg-[#0F673B] text-white rounded-lg hover:bg-[#0c552f] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
               >
                 {isSubmitting ? "Création..." : "Créer"}
               </button>
