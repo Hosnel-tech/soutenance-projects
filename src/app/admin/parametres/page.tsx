@@ -50,7 +50,7 @@ export default function ParametresPage() {
           <h1 className="text-2xl font-bold text-gray-900">Paramètres</h1>
           <p className="text-gray-600">Configurez votre espace d'administration</p>
         </div>
-        <button onClick={onSave} disabled={saving || loading} className="inline-flex items-center px-4 py-2 bg-blue-600 disabled:opacity-60 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+        <button onClick={onSave} disabled={saving || loading} className="inline-flex items-center px-4 py-2 bg-[#0F673B] disabled:opacity-60 text-white text-sm font-medium rounded-lg hover:bg-[#0a4a2a] transition-colors duration-200">
           {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
           {saving ? 'Enregistrement...' : 'Sauvegarder'}
         </button>
@@ -58,33 +58,33 @@ export default function ParametresPage() {
 
       {loading && <div className="flex items-center text-sm text-gray-500"><Loader2 className="h-4 w-4 mr-2 animate-spin" />Chargement du profil...</div>}
       {error && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded"><AlertCircle className="h-4 w-4" />{error}</div>}
-      {success && !error && <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 border border-green-200 px-3 py-2 rounded"><CheckCircle2 className="h-4 w-4" />Modifications enregistrées</div>}
+      {success && !error && <div className="flex items-center gap-2 text-sm text-[#0F673B] bg-[#0F673B] border border-[#0F673B] px-3 py-2 rounded"><CheckCircle2 className="h-4 w-4" />Modifications enregistrées</div>}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
           <div className="flex items-center mb-4">
-            <User className="h-5 w-5 text-blue-600 mr-2" />
+            <User className="h-5 w-5 text-[#0F673B] mr-2" />
             <h3 className="text-lg font-medium text-gray-900">Profil utilisateur</h3>
           </div>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Nom d'utilisateur</label>
-              <input type="text" name="name" aria-label="Nom d'utilisateur" title="Nom d'utilisateur" value={form.name} onChange={onChange} disabled={loading} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+              <input type="text" name="name" aria-label="Nom d'utilisateur" title="Nom d'utilisateur" value={form.name} onChange={onChange} disabled={loading} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent disabled:bg-gray-100" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input type="email" name="email" aria-label="Email" title="Email" value={form.email} onChange={onChange} disabled={loading} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+              <input type="email" name="email" aria-label="Email" title="Email" value={form.email} onChange={onChange} disabled={loading} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent disabled:bg-gray-100" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Nouveau mot de passe</label>
-              <input type="password" name="password" aria-label="Nouveau mot de passe" title="Nouveau mot de passe" value={form.password} onChange={onChange} disabled={loading} placeholder="••••••••" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+              <input type="password" name="password" aria-label="Nouveau mot de passe" title="Nouveau mot de passe" value={form.password} onChange={onChange} disabled={loading} placeholder="••••••••" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent disabled:bg-gray-100" />
             </div>
           </div>
         </div>
 
         <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
           <div className="flex items-center mb-4">
-            <Bell className="h-5 w-5 text-green-600 mr-2" />
+            <Bell className="h-5 w-5 text-[#0F673B] mr-2" />
             <h3 className="text-lg font-medium text-gray-900">Notifications</h3>
           </div>
           <div className="space-y-4 text-sm text-gray-500">
@@ -115,7 +115,7 @@ export default function ParametresPage() {
 
         <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
           <div className="flex items-center mb-4">
-            <Shield className="h-5 w-5 text-red-600 mr-2" />
+            <Shield className="h-5 w-5 text-[#0F673B] mr-2" />
             <h3 className="text-lg font-medium text-gray-900">Sécurité</h3>
           </div>
           <div className="space-y-4 text-sm text-gray-500">
@@ -143,7 +143,7 @@ export default function ParametresPage() {
 
         <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
           <div className="flex items-center mb-4">
-            <Database className="h-5 w-5 text-purple-600 mr-2" />
+            <Database className="h-5 w-5 text-[#0F673B] mr-2" />
             <h3 className="text-lg font-medium text-gray-900">Base de données</h3>
           </div>
           <div className="space-y-4 text-sm text-gray-500">

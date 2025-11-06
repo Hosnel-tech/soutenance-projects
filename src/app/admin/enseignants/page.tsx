@@ -145,8 +145,8 @@ export default function EnseignantsPage() {
                 <tr key={t.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className={`h-10 w-10 rounded-full flex items-center justify-center ${t.is_validated ? 'bg-green-100' : 'bg-yellow-100'}`}>
-                        <Users className={`h-5 w-5 ${t.is_validated ? 'text-green-600' : 'text-yellow-600'}`} />
+                      <div className={`h-10 w-10 rounded-full flex items-center justify-center ${t.is_validated ? 'bg-[#0F673B]/10' : 'bg-yellow-100'}`}>
+                        <Users className={`h-5 w-5 ${t.is_validated ? 'text-[#0F673B]' : 'text-yellow-600'}`} />
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">{t.name}</div>
@@ -161,9 +161,9 @@ export default function EnseignantsPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">{t.bank_account || '—'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.bank_name || '—'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.classe || '—'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.is_validated ? <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Validé</span> : <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{t.is_validated ? <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-[#0F673B]/10 text-[#0F673B]">Validé</span> : <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
-                    {!t.is_validated && <button onClick={() => onValidate(t.id)} className="text-green-600 hover:text-green-900 flex items-center gap-1"><CheckCircle2 className="h-4 w-4" />Valider</button>}
+                    {!t.is_validated && <button onClick={() => onValidate(t.id)} className="text-[#0F673B] hover:text-[#0a4a2a] flex items-center gap-1"><CheckCircle2 className="h-4 w-4" />Valider</button>}
                     <button onClick={() => onDelete(t.id)} className="text-red-600 hover:text-red-900 flex items-center gap-1"><Trash2 className="h-4 w-4" />Supprimer</button>
                   </td>
                 </tr>
@@ -184,7 +184,7 @@ export default function EnseignantsPage() {
             Précédent
           </button>
           <button
-            className="px-2.5 py-1.5 text-xs font-medium text-white bg-[#004B70] hover:bg-[#003A5A] rounded-md transition-colors duration-200"
+            className="px-2.5 py-1.5 text-xs font-medium text-white bg-[#0F673B] hover:bg-[#0a4a2a] rounded-md transition-colors duration-200"
           >
             1
           </button>

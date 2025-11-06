@@ -94,7 +94,7 @@ export default function TDPage() {
         );
       case "en cours":
         return (
-          <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+          <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-[#0F673B]/10 text-[#0F673B]">
             En cours
           </span>
         );
@@ -133,7 +133,7 @@ export default function TDPage() {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          className="inline-flex items-center px-4 py-2 bg-[#0F673B] text-white text-sm font-medium rounded-lg hover:bg-[#0a4a2a] transition-colors duration-200"
         >
           <Plus className="h-4 w-4 mr-2" />
           Créer un TD
@@ -141,52 +141,52 @@ export default function TDPage() {
       </div>
 
       {/* Statistiques rapides */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
           <div className="flex items-center">
-            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-blue-600" />
+            <div className="h-12 w-12 rounded-lg bg-[#0F673B]/10 flex items-center justify-center">
+              <FileText className="h-6 w-6 text-[#0F673B]" />
             </div>
-            <div className="ml-3">
+            <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">Total TD</p>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900">
                 {tdList.length}
               </p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
           <div className="flex items-center">
-            <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-              <BookOpen className="h-5 w-5 text-green-600" />
+            <div className="h-12 w-12 rounded-lg bg-[#0F673B]/10 flex items-center justify-center">
+              <BookOpen className="h-6 w-6 text-[#0F673B]" />
             </div>
-            <div className="ml-3">
+            <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">TD En cours</p>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900">
                 {tdList.filter((td) => td.statut === "en_cours").length}
               </p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
           <div className="flex items-center">
-            <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
-              <Clock className="h-5 w-5 text-orange-600" />
+            <div className="h-12 w-12 rounded-lg bg-amber-100 flex items-center justify-center">
+              <Clock className="h-6 w-6 text-amber-600" />
             </div>
-            <div className="ml-3">
+            <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">Temps Moyen</p>
-              <p className="text-lg font-semibold text-gray-900">1h45</p>
+              <p className="text-2xl font-bold text-gray-900">1h45</p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
           <div className="flex items-center">
-            <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-purple-600" />
+            <div className="h-12 w-12 rounded-lg bg-purple-100 flex items-center justify-center">
+              <FileText className="h-6 w-6 text-purple-600" />
             </div>
-            <div className="ml-3">
+            <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">TD Terminés</p>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900">
                 {tdList.filter((td) => td.statut === "termine").length}
               </p>
             </div>
@@ -203,13 +203,13 @@ export default function TDPage() {
             placeholder="Rechercher un TD..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
           />
         </div>
         <select aria-label="Filtrer par statut"
           value={selectedFilter}
           onChange={(e) => setSelectedFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
         >
           <option value="tous">Tous les statuts</option>
           <option value="en_attente">En attente</option>
@@ -268,8 +268,8 @@ export default function TDPage() {
                 <tr key={td.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                        <FileText className="h-5 w-5 text-blue-600" />
+                      <div className="h-10 w-10 rounded-full bg-[#0F673B]/10 flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-[#0F673B]" />
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
@@ -304,7 +304,7 @@ export default function TDPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button title="Terminer" aria-label="Terminer" onClick={() => onTerminer(td.id)} className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50">
+                      <button title="Terminer" aria-label="Terminer" onClick={() => onTerminer(td.id)} className="text-[#0F673B] hover:text-blue-900 p-1 rounded hover:bg-blue-50">
                         <Eye className="h-4 w-4" />
                       </button>
                       <button title="Payer" aria-label="Payer" onClick={() => onPayer(td.id)} className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50">
@@ -336,7 +336,7 @@ export default function TDPage() {
           <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
             Précédent
           </button>
-          <button className="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700">
+          <button className="px-3 py-2 text-sm font-medium text-white bg-[#0F673B] border border-[#0F673B]/30 rounded-md hover:bg-[#0a4a2a]">
             1
           </button>
           <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">

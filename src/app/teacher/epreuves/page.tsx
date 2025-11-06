@@ -40,7 +40,7 @@ export default function TeacherEpreuvesPage() {
           <p className="text-gray-600">Gérez vos épreuves et examens</p>
         </div>
         {!creating && (
-          <button onClick={() => setCreating(true)} className="inline-flex items-center px-4 py-2 bg-[#004B70] text-white text-sm font-medium rounded-lg hover:bg-[#003A5A] transition-colors duration-200">
+          <button onClick={() => setCreating(true)} className="inline-flex items-center px-4 py-2 bg-[#0F673B] text-white text-sm font-medium rounded-lg hover:bg-[#0a4a2a] transition-colors duration-200">
             <Plus className="h-4 w-4 mr-2" />
             Créer une épreuve
           </button>
@@ -51,7 +51,7 @@ export default function TeacherEpreuvesPage() {
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Rechercher une épreuve..." className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" />
+          <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Rechercher une épreuve..." className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent" />
         </div>
         <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
           <Filter className="h-4 w-4 mr-2" />
@@ -60,14 +60,14 @@ export default function TeacherEpreuvesPage() {
       </div>
 
       {creating && (
-        <div className="bg-white rounded-xl shadow p-4 border border-green-200">
+        <div className="bg-white rounded-xl shadow p-4 border border-[#0F673B]/20">
           <h3 className="font-medium mb-3">Nouvelle épreuve</h3>
           <div className="grid gap-3">
             <input value={form.titre} onChange={e => setForm(f => ({ ...f, titre: e.target.value }))} placeholder="Titre" className="px-3 py-2 border rounded" />
             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Description" className="px-3 py-2 border rounded" />
             <div className="flex gap-2 justify-end">
               <button onClick={() => { setCreating(false); setForm({ titre: "", description: "" }); }} className="px-3 py-2 text-sm bg-gray-200 rounded flex items-center"><X className="h-4 w-4 mr-1" />Annuler</button>
-              <button onClick={submitCreate} className="px-3 py-2 text-sm bg-green-600 text-white rounded flex items-center"><Save className="h-4 w-4 mr-1" />Enregistrer</button>
+              <button onClick={submitCreate} className="px-3 py-2 text-sm bg-[#0F673B] text-white rounded flex items-center"><Save className="h-4 w-4 mr-1" />Enregistrer</button>
             </div>
           </div>
         </div>
@@ -81,13 +81,13 @@ export default function TeacherEpreuvesPage() {
           <div key={e.id} className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-200">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-green-600" />
+                <div className="w-12 h-12 bg-[#0F673B]/10 rounded-lg flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-[#0F673B]" />
                 </div>
                 <div className="flex gap-2">
                   {editingId === e.id ? (
                     <>
-                      <button onClick={saveEdit} className="p-2 rounded bg-green-100 hover:bg-green-200" title="Enregistrer"><Save className="h-4 w-4" /></button>
+                      <button onClick={saveEdit} className="p-2 rounded bg-[#0F673B]/10 hover:bg-[#0F673B]/20" title="Enregistrer"><Save className="h-4 w-4" /></button>
                       <button onClick={() => setEditingId(null)} className="p-2 rounded bg-gray-100 hover:bg-gray-200" title="Annuler"><X className="h-4 w-4" /></button>
                     </>
                   ) : (
@@ -127,7 +127,7 @@ export default function TeacherEpreuvesPage() {
           <div className="text-sm text-gray-700">Total <span className="font-medium">{data.total}</span></div>
           <div className="flex space-x-2">
             <button disabled={!data.prev_page_url} onClick={() => setPage(p => Math.max(1, p - 1))} className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md disabled:opacity-40">Précédent</button>
-            <span className="px-3 py-2 text-sm font-medium bg-green-600 text-white rounded-md">{data.current_page}</span>
+            <span className="px-3 py-2 text-sm font-medium bg-[#0F673B] text-white rounded-md">{data.current_page}</span>
             <button disabled={!data.next_page_url} onClick={() => setPage(p => p + 1)} className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md disabled:opacity-40">Suivant</button>
           </div>
         </div>

@@ -54,35 +54,35 @@ export default function ComptableSettings() {
             <nav className="space-y-2">
               <a
                 href="#profile"
-                className="flex items-center px-3 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-lg"
+                className="flex items-center px-3 py-2 text-sm font-medium text-[#0F673B] bg-[#0F673B]/10 rounded-lg"
               >
                 <User className="h-4 w-4 mr-3" />
                 Profil
               </a>
               <a
                 href="#company"
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="bg-[#0F673B] hover:bg-[#0a4a2a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
               >
                 <Building className="h-4 w-4 mr-3" />
                 Entreprise
               </a>
               <a
                 href="#security"
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="bg-[#0F673B] hover:bg-[#0a4a2a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
               >
                 <Lock className="h-4 w-4 mr-3" />
                 Sécurité
               </a>
               <a
                 href="#notifications"
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="bg-[#0F673B] hover:bg-[#0a4a2a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
               >
                 <Bell className="h-4 w-4 mr-3" />
                 Notifications
               </a>
               <a
                 href="#display"
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="bg-[#0F673B] hover:bg-[#0a4a2a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
               >
                 <Monitor className="h-4 w-4 mr-3" />
                 Affichage
@@ -96,17 +96,17 @@ export default function ComptableSettings() {
           {/* Section Profil */}
           <div id="profile" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <User className="h-5 w-5 mr-2 text-green-600" />
+              <User className="h-5 w-5 mr-2 text-[#0F673B]" />
               Informations personnelles
             </h2>
 
             {/* Photo de profil */}
             <div className="flex items-center mb-6">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                <User className="h-10 w-10 text-green-600" />
+              <div className="w-20 h-20 bg-[#0F673B]/10 rounded-full flex items-center justify-center mr-4">
+                <User className="h-10 w-10 text-[#0F673B]" />
               </div>
               <div>
-                <button className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+                <button className="inline-flex items-center px-4 py-2 bg-[#0F673B] text-white text-sm font-medium rounded-lg hover:bg-[#0a4a2a] transition-colors duration-200">
                   <Camera className="h-4 w-4 mr-2" />
                   Changer la photo
                 </button>
@@ -124,7 +124,7 @@ export default function ComptableSettings() {
                 <input
                   type="text"
                   defaultValue="Jean"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                 />
               </div>
               <div>
@@ -134,7 +134,7 @@ export default function ComptableSettings() {
                 <input
                   type="text"
                   defaultValue="Dupont"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                 />
               </div>
               <div>
@@ -146,7 +146,7 @@ export default function ComptableSettings() {
                   <input
                     type="email"
                     defaultValue="jean.dupont@comptabilite.fr"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function ComptableSettings() {
                   <input
                     type="tel"
                     defaultValue="+33 1 23 45 67 89"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function ComptableSettings() {
                   <input
                     type="text"
                     defaultValue="Comptabilité Pro SARL"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -180,7 +180,7 @@ export default function ComptableSettings() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Spécialité
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent">
                   <option>Comptabilité générale</option>
                   <option>Fiscalité</option>
                   <option>Audit</option>
@@ -189,12 +189,12 @@ export default function ComptableSettings() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Années d&apos;expérience
+                  Années d'expérience
                 </label>
                 <input
                   type="number"
                   defaultValue="12"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                 />
               </div>
             </div>
@@ -203,19 +203,19 @@ export default function ComptableSettings() {
           {/* Section Entreprise */}
           <div id="company" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Building className="h-5 w-5 mr-2 text-green-600" />
+              <Building className="h-5 w-5 mr-2 text-[#0F673B]" />
               Informations entreprise
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom de l&apos;entreprise
+                  Nom de l'entreprise
                 </label>
                 <input
                   type="text"
                   defaultValue="Comptabilité Pro SARL"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                 />
               </div>
               <div>
@@ -225,7 +225,7 @@ export default function ComptableSettings() {
                 <input
                   type="text"
                   defaultValue="12345678901234"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                 />
               </div>
               <div>
@@ -237,7 +237,7 @@ export default function ComptableSettings() {
                   <input
                     type="text"
                     defaultValue="FR12345678901"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -248,7 +248,7 @@ export default function ComptableSettings() {
                 <textarea
                   rows={3}
                   defaultValue="123 Rue de la Comptabilité&#10;75001 Paris&#10;France"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                 />
               </div>
             </div>
@@ -257,7 +257,7 @@ export default function ComptableSettings() {
           {/* Section Sécurité */}
           <div id="security" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Lock className="h-5 w-5 mr-2 text-green-600" />
+              <Lock className="h-5 w-5 mr-2 text-[#0F673B]" />
               Sécurité
             </h2>
 
@@ -270,7 +270,7 @@ export default function ComptableSettings() {
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                   <button
                     type="button"
@@ -294,7 +294,7 @@ export default function ComptableSettings() {
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     type="password"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -307,16 +307,16 @@ export default function ComptableSettings() {
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     type="password"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0F673B] focus:border-transparent"
                   />
                 </div>
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-blue-800 mb-2">
+              <div className="bg-[#0F673B]/10 border border-[#0F673B]/20 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-[#0F673B] mb-2">
                   Exigences du mot de passe
                 </h4>
-                <ul className="text-xs text-blue-700 space-y-1">
+                <ul className="text-xs text-[#0F673B] space-y-1">
                   <li>• Au moins 8 caractères</li>
                   <li>• Au moins une lettre majuscule</li>
                   <li>• Au moins un chiffre</li>
@@ -329,7 +329,7 @@ export default function ComptableSettings() {
           {/* Section Notifications */}
           <div id="notifications" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Bell className="h-5 w-5 mr-2 text-green-600" />
+              <Bell className="h-5 w-5 mr-2 text-[#0F673B]" />
               Notifications
             </h2>
 
@@ -350,7 +350,7 @@ export default function ComptableSettings() {
                     onChange={() => handleNotificationChange("email")}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#0F673B]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F673B]"></div>
                 </label>
               </div>
 
@@ -370,7 +370,7 @@ export default function ComptableSettings() {
                     onChange={() => handleNotificationChange("push")}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#0F673B]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F673B]"></div>
                 </label>
               </div>
 
@@ -390,7 +390,7 @@ export default function ComptableSettings() {
                     onChange={() => handleNotificationChange("sms")}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#0F673B]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F673B]"></div>
                 </label>
               </div>
             </div>
@@ -399,7 +399,7 @@ export default function ComptableSettings() {
           {/* Section Affichage */}
           <div id="display" className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-              <Monitor className="h-5 w-5 mr-2 text-green-600" />
+              <Monitor className="h-5 w-5 mr-2 text-[#0F673B]" />
               Préférences d&apos;affichage
             </h2>
 
@@ -410,7 +410,7 @@ export default function ComptableSettings() {
                 </label>
                 <div className="relative">
                   <Euro className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <select className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <select className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent">
                     <option>Euro (€)</option>
                     <option>Dollar US ($)</option>
                     <option>Livre Sterling (£)</option>
@@ -424,7 +424,7 @@ export default function ComptableSettings() {
                 </label>
                 <div className="relative">
                   <Calculator className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <select className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <select className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent">
                     <option>1 234,56 (France)</option>
                     <option>1,234.56 (US)</option>
                     <option>1.234,56 (Allemagne)</option>
@@ -436,7 +436,7 @@ export default function ComptableSettings() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Langue
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent">
                   <option>Français</option>
                   <option>English</option>
                   <option>Español</option>
@@ -447,7 +447,7 @@ export default function ComptableSettings() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Fuseau horaire
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F673B] focus:border-transparent">
                   <option>Europe/Paris (UTC+1)</option>
                   <option>Europe/London (UTC+0)</option>
                   <option>America/New_York (UTC-5)</option>
@@ -461,7 +461,7 @@ export default function ComptableSettings() {
             <button className="px-6 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
               Annuler
             </button>
-            <button className="inline-flex items-center px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+            <button className="inline-flex items-center px-6 py-2 bg-[#0F673B] text-white text-sm font-medium rounded-lg hover:bg-[#0a4a2a] transition-colors duration-200">
               <Save className="h-4 w-4 mr-2" />
               Enregistrer
             </button>

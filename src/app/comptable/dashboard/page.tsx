@@ -64,10 +64,10 @@ export default function Dashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-[#0F673B]">
           <div className="flex items-center">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <DollarSign className="h-6 w-6 text-green-600" />
+            <div className="p-2 bg-[#0F673B]/10 rounded-lg">
+              <DollarSign className="h-6 w-6 text-[#0F673B]" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Revenus Total</p>
@@ -76,10 +76,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
+        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-[#0F673B]">
           <div className="flex items-center">
-            <div className="p-2 bg-red-100 rounded-lg">
-              <CreditCard className="h-6 w-6 text-red-600" />
+            <div className="p-2 bg-[#0F673B]/10 rounded-lg">
+              <CreditCard className="h-6 w-6 text-[#0F673B]" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Dépenses</p>
@@ -88,10 +88,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-[#0F673B]">
           <div className="flex items-center">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <TrendingUp className="h-6 w-6 text-blue-600" />
+            <div className="p-2 bg-[#0F673B]/10 rounded-lg">
+              <TrendingUp className="h-6 w-6 text-[#0F673B]" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Bénéfice Net</p>
@@ -100,10 +100,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
+        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-[#0F673B]">
           <div className="flex items-center">
-            <div className="p-2 bg-orange-100 rounded-lg">
-              <FileText className="h-6 w-6 text-orange-600" />
+            <div className="p-2 bg-[#0F673B]/10 rounded-lg">
+              <FileText className="h-6 w-6 text-[#0F673B]" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Factures en Attente</p>
@@ -118,19 +118,19 @@ export default function Dashboard() {
         {/* Recent Transactions */}
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <Clock className="h-5 w-5 mr-2 text-green-600" />
+            <Clock className="h-5 w-5 mr-2 text-[#0F673B]" />
             Transactions Récentes
           </h2>
           <div className="space-y-4">
             {recentTransactions.map((transaction) => (
               <div key={transaction.id} className={`flex items-center p-3 rounded-lg border-l-4 ${
                 transaction.type === "income" 
-                  ? "bg-green-50 border-green-500" 
+                  ? "bg-[#0F673B]/10 border-[#0F673B]" 
                   : "bg-red-50 border-red-500"
               }`}>
                 <div className="flex-shrink-0">
                   <div className={`w-2 h-2 rounded-full ${
-                    transaction.type === "income" ? "bg-green-500" : "bg-red-500"
+                    transaction.type === "income" ? "bg-[#0F673B]" : "bg-red-500"
                   }`}></div>
                 </div>
                 <div className="ml-3 flex-1">
@@ -141,7 +141,7 @@ export default function Dashboard() {
                 </div>
                 <div className="text-right">
                   <span className={`text-sm font-medium ${
-                    transaction.type === "income" ? "text-green-600" : "text-red-600"
+                    transaction.type === "income" ? "text-[#0F673B]" : "text-red-600"
                   }`}>
                     {transaction.amount}
                   </span>

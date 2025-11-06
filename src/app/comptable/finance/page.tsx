@@ -16,9 +16,9 @@ export default function FinanceDashboard() {
       change: "+12.5%",
       trend: "up",
       icon: DollarSign,
-      color: "text-green-600",
-      bgColor: "bg-green-100",
-      borderColor: "border-green-500",
+      color: "text-[#0F673B]",
+      bgColor: "bg-[#0F673B]/10",
+      borderColor: "border-[#0F673B]",
     },
     {
       title: "Dépenses",
@@ -36,9 +36,9 @@ export default function FinanceDashboard() {
       change: "+15.3%",
       trend: "up",
       icon: TrendingUp,
-      color: "text-blue-600",
-      bgColor: "bg-blue-100",
-      borderColor: "border-blue-500",
+      color: "text-[#0F673B]",
+      bgColor: "bg-[#0F673B]/10",
+      borderColor: "border-[#0F673B]",
     },
     {
       title: "Factures en Attente",
@@ -83,12 +83,13 @@ export default function FinanceDashboard() {
                   <p className="text-sm font-medium text-gray-600">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <h2 className="text-xl font-bold text-gray-800 flex items-center">
+                    <DollarSign className="h-5 w-5 mr-2 text-[#0F673B]" />
                     {stat.value}
-                  </p>
+                  </h2>
                   <p
                     className={`text-sm mt-1 flex items-center ${
-                      stat.trend === "up" ? "text-green-600" : "text-red-600"
+                      stat.trend === "up" ? "text-[#0F673B]" : "text-red-600"
                     }`}
                   >
                     {stat.trend === "up" ? (
@@ -237,7 +238,7 @@ export default function FinanceDashboard() {
                   48000
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-[#0F673B]/10 text-[#0F673B]">
                     Payé
                   </span>
                 </td>
@@ -277,7 +278,7 @@ export default function FinanceDashboard() {
                   21000
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-[#0F673B]/10 text-[#0F673B]">
                     Payé
                   </span>
                 </td>
